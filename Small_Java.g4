@@ -19,7 +19,8 @@ exp : factor
 	(PLUS factor | MINUS factor)*;
 
 factor  : v
-	(MUL v  | DIV v )*;
+	(MUL v  | div_v )*;
+div_v : DIV val=v;
 
 v : (INT | FLOAT)
     | IDF

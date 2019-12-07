@@ -48,7 +48,16 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     @Override public T visitExp(Small_JavaParser.ExpContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitFactor(Small_JavaParser.FactorContext ctx) { return visitChildren(ctx); }
-    
+
+    @Override public T visitDiv_v(Small_JavaParser.Div_vContext ctx) {
+        if(ctx.val.getText().equals("0")){
+            System.err.println(ctx.stop.getLine()+":"+ ctx.stop.getCharPositionInLine() +
+                    " :: Division by Zero Error");
+        }
+        return visitChildren(ctx);
+    }
+
+
     @Override public T visitV(Small_JavaParser.VContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }

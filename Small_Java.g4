@@ -7,7 +7,10 @@ class_declare : modif CLASS_KW IDF ACC_B class_content ACC_E;
 class_content : vars_declare main;
 vars_declare : var_declare*;
 main : MAIN_KW ACC_B instruction* ACC_E;
-instruction : assign | if_cond | read | write;
+instruction : assign
+            | if_cond
+            | read
+            | write;
 
 assign : IDF ASSIGN (exp | string) SEMICOLON;
 if_cond : IF_KW PAR_B exp PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction* ACC_E)?;
@@ -25,12 +28,19 @@ v : (INT | FLOAT)
     | IDF
 	| PAR_B exp PAR_E;
 
-
 var_declare : type (IDF COMMA)* IDF SEMICOLON;
-bibs : (BIB_IO | BIB_LANG);
-type : (TYPE_INT | TYPE_FLOAT | TYPE_STRING);
-modif : (MODIF_PUBLIC | MODIF_PROTECTED) | ;
-format : FORMAT_INT | FORMAT_FLOAT | FORMAT_STRING;
+
+bibs : BIB_IO
+     | BIB_LANG;
+type : TYPE_INT
+     | TYPE_FLOAT
+     | TYPE_STRING;
+modif : MODIF_PUBLIC
+      | MODIF_PROTECTED
+      | ;
+format : FORMAT_INT
+       | FORMAT_FLOAT
+       | FORMAT_STRING;
 string : STRING;
 
 
@@ -77,8 +87,10 @@ TYPE_STRING : 'string_SJ';
 
 
 
-INT : [0-9]+;
-FLOAT : [0-9]+'.'[0-9]+;
+INT : [-]?[0-9]+;
+FLOAT : INT'.'[0-9]+;
+
+NUMBER : INT | FLOAT;
 
 IDF : [A-Za-z]{1,8};
 

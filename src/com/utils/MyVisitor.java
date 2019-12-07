@@ -11,7 +11,14 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
         return ST;
     }
 
-    public void checkIdfLength(String idf, int line, int column){
+    private void checkDeclaration(String idf, int line, int column) {
+        if (!ST.contains(idf)){
+            System.err.println(line+":"+ column +
+                    " :: Variable '" + idf +"' is used without declaration");
+        }
+    }
+
+    private void checkIdfLength(String idf, int line, int column){
         if (idf.length() > 10){
             System.err.println(line+":"+column+" :: Identifier has exceeded the length limit of 10");
         }
@@ -37,7 +44,10 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitInstruction(Small_JavaParser.InstructionContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitAssign(Small_JavaParser.AssignContext ctx) { return visitChildren(ctx); }
+    @Override public T visitAssign(Small_JavaParser.AssignContext ctx) {
+        checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        return visitChildren(ctx);
+    }
     
     @Override public T visitIf_cond(Small_JavaParser.If_condContext ctx) { return visitChildren(ctx); }
     
@@ -58,8 +68,15 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     }
 
 
-    @Override public T visitV(Small_JavaParser.VContext ctx) { return visitChildren(ctx); }
-    
+    @Override public T visitV(Small_JavaParser.VContext ctx) {
+        if(ctx.idf != null){
+            checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        }
+        return visitChildren(ctx);
+    }
+
+
+
     @Override public T visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitFactor_b(Small_JavaParser.Factor_bContext ctx) { return visitChildren(ctx); }

@@ -9,7 +9,7 @@ vars_declare : var_declare*;
 main : MAIN_KW ACC_B instruction* ACC_E;
 instruction : assign | if_cond | read | write;
 
-assign : IDF ASSIGN (exp_b | string) SEMICOLON;
+assign : idf=IDF ASSIGN (exp_b | string) SEMICOLON;
 if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction* ACC_E)?;
 read : IN_KW PAR_B format COMMA IDF PAR_E SEMICOLON;
 write : OUT_KW PAR_B (IDF | string) (COMMA exp_b)* PAR_E SEMICOLON;
@@ -23,7 +23,7 @@ factor  : v
 div_v : DIV val=v;
 
 v : (INT | FLOAT)
-    | IDF
+    | idf=IDF
 	| PAR_B exp PAR_E;
 
 exp_b : factor_b (OR factor_b)*;

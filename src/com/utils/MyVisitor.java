@@ -51,7 +51,10 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitIf_cond(Small_JavaParser.If_condContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitRead(Small_JavaParser.ReadContext ctx) { return visitChildren(ctx); }
+    @Override public T visitRead(Small_JavaParser.ReadContext ctx) {
+        checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        return visitChildren(ctx);
+    }
     
     @Override public T visitWrite(Small_JavaParser.WriteContext ctx) { return visitChildren(ctx); }
     

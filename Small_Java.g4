@@ -11,8 +11,8 @@ instruction : assign | if_cond | read | write;
 
 assign : idf=IDF ASSIGN (exp_b | string) SEMICOLON;
 if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction* ACC_E)?;
-read : IN_KW PAR_B format COMMA IDF PAR_E SEMICOLON;
-write : OUT_KW PAR_B (IDF | string) (COMMA exp_b)* PAR_E SEMICOLON;
+read : IN_KW PAR_B format COMMA idf=IDF PAR_E SEMICOLON;
+write : OUT_KW PAR_B string (COMMA exp_b)* PAR_E SEMICOLON;
 
 
 exp : factor

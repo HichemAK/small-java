@@ -1,12 +1,13 @@
 import Small_Java.lang;
 import Small_Java.io;
 
-public class_SJ Classe{
+public class_SJ classe{
     int_SJ a;
-    float_SJ b,c,d;
+    float_SJ b,caaaaaaaaaaaa,d;
     string_SJ str;
     main_SJ {
         a := 35-23;
+        a := a/0;
         b := 3.5/3.6;
         c := (a+3) * (5-c) /(((4)));
         if (a+3)then{

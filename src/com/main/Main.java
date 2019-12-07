@@ -1,5 +1,8 @@
 package com.main;
 
+import com.gen.Small_JavaBaseVisitor;
+import com.gen.Small_JavaParser;
+import com.gen.Small_JavaLexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;

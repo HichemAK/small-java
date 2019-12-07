@@ -1,4 +1,4 @@
-package utils;
+package com.utils;
 
 public class Quad {
     private Object[] q = {"", "", "", ""};

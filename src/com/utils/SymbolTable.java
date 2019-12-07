@@ -43,7 +43,7 @@ public class SymbolTable extends ArrayList<Row>{
 
     @Override
     public String toString() {
-        String result = "ID \t| VALUE\n";
+        String result = "ID \t| TYPE\t| VALUE\n";
         for(int i=0; i<this.size();i++){
             result += this.get(i).toString() + '\n';
         }

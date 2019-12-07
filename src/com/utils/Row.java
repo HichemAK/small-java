@@ -36,7 +36,7 @@ public class Row{
 
     @Override
     public String toString() {
-        return name + " \t| " + value;
+        return name + " \t| " + type + " \t| " + value;
     }
 
     @Override
@@ -46,7 +46,6 @@ public class Row{
             return r.name.equals(this.name);
         }
         else if(obj instanceof String){
-            System.out.println("HAHAHA");
             String name = (String) obj;
             return this.name.equals(name);
         }

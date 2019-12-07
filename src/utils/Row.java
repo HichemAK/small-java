@@ -3,9 +3,11 @@ package utils;
 public class Row{
     private String name;
     private int value;
-    public Row(String name, int value){
+    private String type;
+    public Row(String name, String type, int value){
         this.name = name;
         this.value = value;
+        this.type = type;
     }
 
     public int getValue() {
@@ -22,6 +24,14 @@ public class Row{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

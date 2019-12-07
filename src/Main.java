@@ -11,12 +11,12 @@ public class Main {
         try {
             String source = "test.txt";
             CharStream cs = fromFileName(source);
-            Simple_copy2Lexer lexer = new Simple_copy2Lexer(cs);
+            Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
-            Simple_copy2Parser parser = new Simple_copy2Parser(token);
+            Small_JavaParser parser = new Small_JavaParser(token);
             ParseTree pt = parser.r();
 
-            Simple_copy2BaseVisitor visitor = new Simple_copy2BaseVisitor();
+            Small_JavaBaseVisitor visitor = new Small_JavaBaseVisitor();
             visitor.visit(pt);
 
         }

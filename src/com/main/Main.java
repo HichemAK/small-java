@@ -1,8 +1,8 @@
 package com.main;
 
-import com.gen.Small_JavaBaseVisitor;
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
+import com.utils.MyVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -21,7 +21,7 @@ public class Main {
             Small_JavaParser parser = new Small_JavaParser(token);
             ParseTree pt = parser.r();
 
-            Small_JavaBaseVisitor visitor = new Small_JavaBaseVisitor();
+            MyVisitor visitor = new MyVisitor();
             visitor.visit(pt);
 
         }

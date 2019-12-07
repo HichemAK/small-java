@@ -3,7 +3,7 @@ grammar Small_Java;
 r : import_bib class_declare;
 import_bib : (IMPORT_KW bibs SEMICOLON)*;
 
-class_declare : modif CLASS_KW IDF ACC_B class_content ACC_E;
+class_declare : modif CLASS_KW idf=IDF ACC_B class_content ACC_E;
 class_content : vars_declare main;
 vars_declare : var_declare*;
 main : MAIN_KW ACC_B instruction* ACC_E;

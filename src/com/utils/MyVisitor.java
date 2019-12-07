@@ -21,7 +21,13 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitImport_bib(Small_JavaParser.Import_bibContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitClass_declare(Small_JavaParser.Class_declareContext ctx) { return visitChildren(ctx); }
+    @Override public T visitClass_declare(Small_JavaParser.Class_declareContext ctx) {
+        if(!Character.isUpperCase(ctx.idf.getText().charAt(0))){
+            System.err.println(ctx.idf.getLine()+":"+ ctx.idf.getCharPositionInLine() +
+                    " :: Class idenifier must begin with an uppercase letter");
+        }
+        return visitChildren(ctx);
+    }
     
     @Override public T visitClass_content(Small_JavaParser.Class_contentContext ctx) { return visitChildren(ctx); }
     
@@ -54,14 +60,14 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     @Override public T visitAtom(Small_JavaParser.AtomContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
-        checkIdfLength(ctx.idf.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        checkIdfLength(ctx.idf.getText(), ctx.idf.getLine(), ctx.idf.getCharPositionInLine());
         type = ctx.t.getText();
         ST.assign(new Row(ctx.idf.getText(), type, 0));
         return visitChildren(ctx);
     }
 
     @Override public T visitVar_dec_idf_comma(Small_JavaParser.Var_dec_idf_commaContext ctx) {
-        checkIdfLength(ctx.idf.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        checkIdfLength(ctx.idf.getText(), ctx.idf.getLine(), ctx.idf.getCharPositionInLine());
         ST.assign(new Row(ctx.idf.getText(), type, 0));
         return visitChildren(ctx);
     }

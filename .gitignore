@@ -1,0 +1,6 @@
+src/Small_Java*.*
+out/*
+.idea/*
+gen/*
+TP_COMPIL.iml
+

@@ -4,6 +4,13 @@ import com.gen.Small_JavaBaseVisitor;
 import com.gen.Small_JavaParser;
 
 public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
+    private SymbolTable ST = new SymbolTable();
+    private String type = null;
+
+    public SymbolTable getST() {
+        return ST;
+    }
+
     @Override public T visitR(Small_JavaParser.RContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitImport_bib(Small_JavaParser.Import_bibContext ctx) { return visitChildren(ctx); }
@@ -40,8 +47,18 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitAtom(Small_JavaParser.AtomContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitVar_declare(Small_JavaParser.Var_declareContext ctx) { return visitChildren(ctx); }
-    
+    @Override public T visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
+        type = ctx.t.getText();
+        ST.assign(new Row(ctx.idf.getText(), type, 0));
+        return visitChildren(ctx);
+    }
+
+    @Override public T visitVar_dec_idf_comma(Small_JavaParser.Var_dec_idf_commaContext ctx) {
+        ST.assign(new Row(ctx.idf.getText(), type, 0));
+        return visitChildren(ctx);
+    }
+
+
     @Override public T visitBibs(Small_JavaParser.BibsContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitType(Small_JavaParser.TypeContext ctx) { return visitChildren(ctx); }

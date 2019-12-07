@@ -31,7 +31,8 @@ literal : NOT? atom;
 atom : exp (op_compare exp)* | PAR_B exp_b PAR_E;
 
 
-var_declare : type (IDF COMMA)* IDF SEMICOLON;
+var_declare : t=type idf=IDF (var_dec_idf_comma)* SEMICOLON;
+var_dec_idf_comma : COMMA idf=IDF;
 bibs : (BIB_IO | BIB_LANG);
 type : (TYPE_INT | TYPE_FLOAT | TYPE_STRING);
 modif : (MODIF_PUBLIC | MODIF_PROTECTED) | ;

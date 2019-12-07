@@ -11,6 +11,12 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
         return ST;
     }
 
+    public void checkIdfLength(String idf, int line, int column){
+        if (idf.length() > 10){
+            System.err.println(line+":"+column+" :: Identifier has exceeded the length limit of 10");
+        }
+    }
+
     @Override public T visitR(Small_JavaParser.RContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitImport_bib(Small_JavaParser.Import_bibContext ctx) { return visitChildren(ctx); }
@@ -48,12 +54,14 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     @Override public T visitAtom(Small_JavaParser.AtomContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
+        checkIdfLength(ctx.idf.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
         type = ctx.t.getText();
         ST.assign(new Row(ctx.idf.getText(), type, 0));
         return visitChildren(ctx);
     }
 
     @Override public T visitVar_dec_idf_comma(Small_JavaParser.Var_dec_idf_commaContext ctx) {
+        checkIdfLength(ctx.idf.getText(), ctx.start.getLine(), ctx.start.getCharPositionInLine());
         ST.assign(new Row(ctx.idf.getText(), type, 0));
         return visitChildren(ctx);
     }

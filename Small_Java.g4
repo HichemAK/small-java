@@ -25,6 +25,11 @@ v : (INT | FLOAT)
     | IDF
 	| PAR_B exp PAR_E;
 
+exp_b : factor_b (OR factor_b)*;
+factor_b : literal (AND literal)*;
+literal : NOT? atom;
+atom : exp (op_compare exp)* | PAR_B exp_b PAR_E;
+
 
 var_declare : type (IDF COMMA)* IDF SEMICOLON;
 bibs : (BIB_IO | BIB_LANG);
@@ -32,6 +37,8 @@ type : (TYPE_INT | TYPE_FLOAT | TYPE_STRING);
 modif : (MODIF_PUBLIC | MODIF_PROTECTED) | ;
 format : FORMAT_INT | FORMAT_FLOAT | FORMAT_STRING;
 string : STRING;
+
+op_compare : G | GE | L | LE | E | NE;
 
 
 IMPORT_KW : 'import';

@@ -97,7 +97,7 @@ TYPE_STRING : 'string_SJ';
 INT : [0-9]+;
 FLOAT : [0-9]+'.'[0-9]+;
 
-IDF : [A-Za-z]{1,8};
+IDF : [A-Za-z][A-Za-z0-9]*;
 
 STRING : '"'.*?'"';
 WS : [ \r\t\n] -> skip;

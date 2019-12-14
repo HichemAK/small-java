@@ -23,7 +23,7 @@ public class Main {
 
             MyVisitor visitor = new MyVisitor();
             visitor.visit(pt);
-
+            System.out.println(visitor.getST());
         }
         catch(IOException e){
             e.printStackTrace();

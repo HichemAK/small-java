@@ -10,6 +10,7 @@ public class_SJ classe{
         a := a/0;
         b := 3.5/3.6;
         c := (a+3) * (5-c) /(((4)));
+        hichem := 4;
         if (a+3)then{
             a := 3;
             str := "";
@@ -18,6 +19,8 @@ public class_SJ classe{
             }
             else{
                 c := 3;
+                Out_SJ("hahahah %d", a, b, d);
+                In_SJ(%d, a);
             }
         }
     }

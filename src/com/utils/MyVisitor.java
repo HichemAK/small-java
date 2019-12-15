@@ -6,6 +6,8 @@ import com.gen.Small_JavaParser;
 public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     private SymbolTable ST = new SymbolTable();
     private String type = null;
+    private boolean biblang_exist = false;
+    private boolean bibio_exist = false;
 
     public SymbolTable getST() {
         return ST;
@@ -26,7 +28,9 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
 
     @Override public T visitR(Small_JavaParser.RContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitImport_bib(Small_JavaParser.Import_bibContext ctx) { return visitChildren(ctx); }
+    @Override public T visitImport_bib(Small_JavaParser.Import_bibContext ctx) {
+        return visitChildren(ctx);
+    }
     
     @Override public T visitClass_declare(Small_JavaParser.Class_declareContext ctx) {
         if(!Character.isUpperCase(ctx.idf.getText().charAt(0))){
@@ -45,18 +49,34 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     @Override public T visitInstruction(Small_JavaParser.InstructionContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitAssign(Small_JavaParser.AssignContext ctx) {
+        if(!biblang_exist){
+            System.err.println("Cannot use assign ':=' without importing Small_Java.lang");
+        }
         checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
     }
     
-    @Override public T visitIf_cond(Small_JavaParser.If_condContext ctx) { return visitChildren(ctx); }
+    @Override public T visitIf_cond(Small_JavaParser.If_condContext ctx) {
+        if(!biblang_exist){
+            System.err.println("Cannot use assign IF condition without importing Small_Java.lang");
+        }
+        return visitChildren(ctx);
+    }
     
     @Override public T visitRead(Small_JavaParser.ReadContext ctx) {
+        if(!bibio_exist){
+            System.err.println("Cannot use function 'In_SJ' without importing Small_Java.io");
+        }
         checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
     }
     
-    @Override public T visitWrite(Small_JavaParser.WriteContext ctx) { return visitChildren(ctx); }
+    @Override public T visitWrite(Small_JavaParser.WriteContext ctx) {
+        if(!bibio_exist){
+            System.err.println("Cannot use function 'Out_SJ' without importing Small_Java.io");
+        }
+        return visitChildren(ctx);
+    }
     
     @Override public T visitExp(Small_JavaParser.ExpContext ctx) { return visitChildren(ctx); }
     
@@ -102,7 +122,15 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     }
 
 
-    @Override public T visitBibs(Small_JavaParser.BibsContext ctx) { return visitChildren(ctx); }
+    @Override public T visitBibs(Small_JavaParser.BibsContext ctx) {
+        if(ctx.BIB_IO() != null){
+            bibio_exist = true;
+        }
+        if(ctx.BIB_LANG() != null){
+            biblang_exist = true;
+        }
+        return visitChildren(ctx);
+    }
     
     @Override public T visitType(Small_JavaParser.TypeContext ctx) { return visitChildren(ctx); }
     

@@ -1,5 +1,5 @@
 import Small_Java.lang;
-import Small_Java.io;
+
 
 public class_SJ classe{
     int_SJ a;

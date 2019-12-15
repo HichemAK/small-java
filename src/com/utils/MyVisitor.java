@@ -50,7 +50,8 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitAssign(Small_JavaParser.AssignContext ctx) {
         if(!biblang_exist){
-            System.err.println("Cannot use assign ':=' without importing Small_Java.lang");
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: Cannot use assign ':=' without importing Small_Java.lang");
         }
         checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
@@ -58,14 +59,16 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitIf_cond(Small_JavaParser.If_condContext ctx) {
         if(!biblang_exist){
-            System.err.println("Cannot use assign IF condition without importing Small_Java.lang");
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: Cannot use assign IF condition without importing Small_Java.lang");
         }
         return visitChildren(ctx);
     }
     
     @Override public T visitRead(Small_JavaParser.ReadContext ctx) {
         if(!bibio_exist){
-            System.err.println("Cannot use function 'In_SJ' without importing Small_Java.io");
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: Cannot use function 'In_SJ' without importing Small_Java.io");
         }
         checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
@@ -73,7 +76,8 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitWrite(Small_JavaParser.WriteContext ctx) {
         if(!bibio_exist){
-            System.err.println("Cannot use function 'Out_SJ' without importing Small_Java.io");
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: Cannot use function 'Out_SJ' without importing Small_Java.io");
         }
         return visitChildren(ctx);
     }

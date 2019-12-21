@@ -5,12 +5,23 @@ import com.gen.Small_JavaParser;
 
 public class MyVisitor extends Small_JavaBaseVisitor<Info> {
     private SymbolTable ST = new SymbolTable();
+    private QuadTable QT = new QuadTable();
     private String type = null;
     private boolean biblang_exist = false;
     private boolean bibio_exist = false;
+    private int temp_n = 0;
+
+    public String getNextTemp(){
+        temp_n++;
+        return "T" + temp_n;
+    }
 
     public SymbolTable getST() {
         return ST;
+    }
+
+    public QuadTable getQT() {
+        return QT;
     }
 
     private boolean checkIfDeclared(String idf, int line, int column) {
@@ -96,9 +107,31 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
             if(ctx.mul_div(i-1).DIV() != null && ctx.v(i).getText().equals("0")){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: ERROR Division by Zero");
+                return null;
             }
         }
-        return visitChildren(ctx);
+        Info v0 = visitV(ctx.v(0));
+        if(ctx.v().size() == 1){
+            return v0;
+        }
+        String t = getNextTemp();
+        Info temp = new Info(t, v0.type);
+        Quad q = new Quad(":=", temp, v0, null);
+        QT.add(q);
+        for(int i=1;i<ctx.v().size();i++){
+            Info v = visitV(ctx.v(i));
+            if(ctx.mul_div(i-1).DIV() != null){
+                temp.type = "float_SJ";
+            }
+            else if(ctx.mul_div(i-1).MUL() != null){
+                if(temp.type.equals("int_SJ") && v.type.equals("float_SJ")){
+                    temp.type = "float_SJ";
+                }
+            }
+            q = new Quad(ctx.mul_div(i-1).getText(), temp, temp, v);
+            QT.add(q);
+        }
+        return new Info(t);
     }
 
     @Override public Info visitV(Small_JavaParser.VContext ctx) {

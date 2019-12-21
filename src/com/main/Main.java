@@ -14,16 +14,17 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args){
         try {
-            String source = "test.txt";
+            String source = "test2.txt";
             CharStream cs = fromFileName(source);
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
             Small_JavaParser parser = new Small_JavaParser(token);
-            ParseTree pt = parser.r();
+            ParseTree pt = parser.factor();
 
             MyVisitor visitor = new MyVisitor();
             visitor.visit(pt);
             System.out.println(visitor.getST());
+            System.out.println(visitor.getQT());
         }
         catch(IOException e){
             e.printStackTrace();

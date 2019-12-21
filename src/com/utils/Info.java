@@ -6,4 +6,13 @@ public class Info {
         this.name = name;
         this.type = type;
     }
+    public Info(String name){
+        this.name = name;
+        this.type = null;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + ":" + this.type;
+    }
 }

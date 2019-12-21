@@ -53,7 +53,14 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
             System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                     " :: Cannot use assign ':=' without importing Small_Java.lang");
         }
-        checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        if(temp){
+            Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
+            if(row.getType().equals("string_SJ") && ctx.string() == null){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: Cannot cast 'int_SJ/float_SJ' type to 'string_SJ' type");
+            }
+        }
         return visitChildren(ctx);
     }
     
@@ -99,6 +106,11 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
             boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
             if(temp){
                 Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
+                if(row.getType().equals("string_SJ")){
+                    System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                            " :: Cannot use a 'string_SJ' variable in an arithmetic/boolean expression");
+                    return null;
+                }
                 return new Info("$" + row.getName(), row.getType());
             }
         }
@@ -111,7 +123,7 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         else if(ctx.exp() != null){
             return visitExp(ctx.exp());
         }
-        return new Info("null", "null");
+        return null;
     }
 
     @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }

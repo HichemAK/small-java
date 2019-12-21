@@ -11,6 +11,9 @@ public class_SJ Classe{
         a := 35-23;
         a := a/0;
         b := 3.5/3.6;
+        a := (str*2) + 5;
+        str := "azdioaj";
+        str := 35-33;
         c := (a+3) * (5-c) /(((4)));
         hichem := 4;
         if (a+3)then{

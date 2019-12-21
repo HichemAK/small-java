@@ -5,7 +5,9 @@ public class_SJ Classe{
     int_SJ a;
     float_SJ b,caaaaaaaaaaaa,d;
     string_SJ str;
+    int_SJ a;
     main_SJ {
+        a := 35 + "HHAHA";
         a := 35-23;
         a := a/0;
         b := 3.5/3.6;

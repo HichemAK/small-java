@@ -21,7 +21,8 @@ exp : factor
 factor  : v
 	(mul_div v)*;
 
-v : (INT | FLOAT)
+v : INT
+    | FLOAT
     | IDF
 	| PAR_B exp PAR_E;
 

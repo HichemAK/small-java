@@ -13,17 +13,21 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         return ST;
     }
 
-    private void checkIfDeclared(String idf, int line, int column) {
+    private boolean checkIfDeclared(String idf, int line, int column) {
         if (!ST.contains(idf)){
             System.err.println(line+":"+ column +
                     " :: Variable '" + idf +"' is used without declaration");
+            return false;
         }
+        return true;
     }
 
-    private void checkIdfLength(String idf, int line, int column){
+    private boolean checkIdfLength(String idf, int line, int column){
         if (idf.length() > 10){
             System.err.println(line+":"+column+" :: Identifier '" + idf + "' has exceeded the length limit of 10");
+            return false;
         }
+        return true;
     }
 
     @Override public Info visitR(Small_JavaParser.RContext ctx) { return visitChildren(ctx); }
@@ -92,12 +96,23 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
 
     @Override public Info visitV(Small_JavaParser.VContext ctx) {
         if(ctx.IDF() != null){
-            checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+            boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+            if(temp){
+                Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
+                return new Info("$" + row.getName(), row.getType());
+            }
         }
-        return visitChildren(ctx);
+        else if(ctx.FLOAT() != null){
+            return new Info(ctx.FLOAT().getText(), "float_SJ");
+        }
+        else if (ctx.INT() != null){
+            return new Info(ctx.INT().getText(), "int_SJ");
+        }
+        else if(ctx.exp() != null){
+            return visitExp(ctx.exp());
+        }
+        return new Info("null", "null");
     }
-
-
 
     @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }
     
@@ -117,11 +132,13 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         return visitChildren(ctx);
     }
 
-    private void checkIfAlreadyDeclared(String idf, int line, int column) {
+    private boolean checkIfAlreadyDeclared(String idf, int line, int column) {
         if (ST.contains(idf)){
             System.err.println(line+":"+ column +
                     " :: Variable '" + idf +"' has already been declared");
+            return false;
         }
+        return true;
     }
 
 

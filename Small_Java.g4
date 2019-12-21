@@ -3,27 +3,26 @@ grammar Small_Java;
 r : import_bib class_declare;
 import_bib : (IMPORT_KW bibs SEMICOLON)*;
 
-class_declare : modif CLASS_KW idf=IDF ACC_B class_content ACC_E;
+class_declare : modif CLASS_KW CLASS_IDF ACC_B class_content ACC_E;
 class_content : vars_declare main;
 vars_declare : var_declare*;
 main : MAIN_KW ACC_B instruction* ACC_E;
 instruction : assign | if_cond | read | write;
 
-assign : idf=IDF ASSIGN (exp_b | string) SEMICOLON;
+assign : IDF ASSIGN (exp_b | string) SEMICOLON;
 if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction* ACC_E)?;
-read : IN_KW PAR_B format COMMA idf=IDF PAR_E SEMICOLON;
+read : IN_KW PAR_B format COMMA IDF PAR_E SEMICOLON;
 write : OUT_KW PAR_B string (COMMA exp_b)* PAR_E SEMICOLON;
 
 
 exp : factor
-	(PLUS factor | MINUS factor)*;
+	(plus_minus factor)*;
 
 factor  : v
-	(MUL v  | div_v )*;
-div_v : DIV val=v;
+	(mul_div v)*;
 
 v : (INT | FLOAT)
-    | idf=IDF
+    | IDF
 	| PAR_B exp PAR_E;
 
 exp_b : factor_b (OR factor_b)*;
@@ -32,8 +31,8 @@ literal : NOT? atom;
 atom : exp (op_compare exp)* | PAR_B exp_b PAR_E;
 
 
-var_declare : t=type idf=IDF (var_dec_idf_comma)* SEMICOLON;
-var_dec_idf_comma : COMMA idf=IDF;
+var_declare : type IDF (COMMA IDF)* SEMICOLON;
+
 bibs : (BIB_IO | BIB_LANG);
 type : (TYPE_INT | TYPE_FLOAT | TYPE_STRING);
 modif : (MODIF_PUBLIC | MODIF_PROTECTED) | ;
@@ -41,6 +40,8 @@ format : FORMAT_INT | FORMAT_FLOAT | FORMAT_STRING;
 string : STRING;
 
 op_compare : G | GE | L | LE | E | NE;
+mul_div : MUL | DIV;
+plus_minus : PLUS | MINUS;
 
 
 IMPORT_KW : 'import';
@@ -99,6 +100,7 @@ TYPE_STRING : 'string_SJ';
 INT : [0-9]+;
 FLOAT : [0-9]+'.'[0-9]+;
 
+CLASS_IDF : [A-Z][A-Za-z0-9]*;
 IDF : [A-Za-z][A-Za-z0-9]*;
 
 STRING : '"' (~["\r\n] | '""')* '"';

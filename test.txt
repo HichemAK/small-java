@@ -1,7 +1,7 @@
 import Small_Java.lang;
 
 
-public class_SJ classe{
+public class_SJ Classe{
     int_SJ a;
     float_SJ b,caaaaaaaaaaaa,d;
     string_SJ str;

@@ -13,7 +13,7 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
         return ST;
     }
 
-    private void checkDeclaration(String idf, int line, int column) {
+    private void checkIfDeclared(String idf, int line, int column) {
         if (!ST.contains(idf)){
             System.err.println(line+":"+ column +
                     " :: Variable '" + idf +"' is used without declaration");
@@ -22,7 +22,7 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
 
     private void checkIdfLength(String idf, int line, int column){
         if (idf.length() > 10){
-            System.err.println(line+":"+column+" :: Identifier has exceeded the length limit of 10");
+            System.err.println(line+":"+column+" :: Identifier '" + idf + "' has exceeded the length limit of 10");
         }
     }
 
@@ -33,10 +33,6 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     }
     
     @Override public T visitClass_declare(Small_JavaParser.Class_declareContext ctx) {
-        if(!Character.isUpperCase(ctx.idf.getText().charAt(0))){
-            System.err.println(ctx.idf.getLine()+":"+ ctx.idf.getCharPositionInLine() +
-                    " :: Class idenifier must begin with an uppercase letter");
-        }
         return visitChildren(ctx);
     }
     
@@ -53,7 +49,7 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
             System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                     " :: Cannot use assign ':=' without importing Small_Java.lang");
         }
-        checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
     }
     
@@ -70,7 +66,7 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
             System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                     " :: Cannot use function 'In_SJ' without importing Small_Java.io");
         }
-        checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
     }
     
@@ -84,20 +80,19 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     
     @Override public T visitExp(Small_JavaParser.ExpContext ctx) { return visitChildren(ctx); }
     
-    @Override public T visitFactor(Small_JavaParser.FactorContext ctx) { return visitChildren(ctx); }
-
-    @Override public T visitDiv_v(Small_JavaParser.Div_vContext ctx) {
-        if(ctx.val.getText().equals("0")){
-            System.err.println(ctx.stop.getLine()+":"+ ctx.stop.getCharPositionInLine() +
-                    " :: Division by Zero Error");
+    @Override public T visitFactor(Small_JavaParser.FactorContext ctx) {
+        for(int i=1;i<ctx.v().size();i++){
+            if(ctx.mul_div(i-1).DIV() != null && ctx.v(i).getText().equals("0")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: ERROR Division by Zero");
+            }
         }
         return visitChildren(ctx);
     }
 
-
     @Override public T visitV(Small_JavaParser.VContext ctx) {
-        if(ctx.idf != null){
-            checkDeclaration(ctx.idf.getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+        if(ctx.IDF() != null){
+            checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         }
         return visitChildren(ctx);
     }
@@ -113,16 +108,20 @@ public class MyVisitor<T> extends Small_JavaBaseVisitor<T> {
     @Override public T visitAtom(Small_JavaParser.AtomContext ctx) { return visitChildren(ctx); }
     
     @Override public T visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
-        checkIdfLength(ctx.idf.getText(), ctx.idf.getLine(), ctx.idf.getCharPositionInLine());
-        type = ctx.t.getText();
-        ST.assign(new Row(ctx.idf.getText(), type, 0));
+        type = ctx.type().getText();
+        for(int i=0;i<ctx.IDF().size();i++){
+            checkIdfLength(ctx.IDF(i).getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+            checkIfAlreadyDeclared(ctx.IDF(i).getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
+            ST.assign(new Row(ctx.IDF(i).getText(), type, 0));
+        }
         return visitChildren(ctx);
     }
 
-    @Override public T visitVar_dec_idf_comma(Small_JavaParser.Var_dec_idf_commaContext ctx) {
-        checkIdfLength(ctx.idf.getText(), ctx.idf.getLine(), ctx.idf.getCharPositionInLine());
-        ST.assign(new Row(ctx.idf.getText(), type, 0));
-        return visitChildren(ctx);
+    private void checkIfAlreadyDeclared(String idf, int line, int column) {
+        if (ST.contains(idf)){
+            System.err.println(line+":"+ column +
+                    " :: Variable '" + idf +"' has already been declared");
+        }
     }
 
 

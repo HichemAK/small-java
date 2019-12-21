@@ -3,6 +3,8 @@ package com.utils;
 import com.gen.Small_JavaBaseVisitor;
 import com.gen.Small_JavaParser;
 
+import java.util.ArrayList;
+
 public class MyVisitor extends Small_JavaBaseVisitor<Info> {
     private SymbolTable ST = new SymbolTable();
     private QuadTable QT = new QuadTable();
@@ -181,9 +183,45 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
     
     @Override public Info visitFactor_b(Small_JavaParser.Factor_bContext ctx) { return visitChildren(ctx); }
     
-    @Override public Info visitLiteral(Small_JavaParser.LiteralContext ctx) { return visitChildren(ctx); }
+    @Override public Info visitLiteral(Small_JavaParser.LiteralContext ctx) {
+        if(ctx.NOT() == null){
+            return visitAtom(ctx.atom());
+        }
+        Info v = visitAtom(ctx.atom());
+        Quad q = new Quad("NOT", v, v, null);
+        QT.add(q);
+        return v;
+    }
     
-    @Override public Info visitAtom(Small_JavaParser.AtomContext ctx) { return visitChildren(ctx); }
+    @Override public Info visitAtom(Small_JavaParser.AtomContext ctx) {
+        if(ctx.exp_b() != null){
+            return visitExp_b(ctx.exp_b());
+        }
+        Info v0 = visitExp(ctx.exp(0));
+        if(ctx.exp().size() == 1){
+            return v0;
+        }
+        Quad q;
+        Info temp1 = new Info(getNextTemp(), "int_SJ");
+        q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
+        QT.add(q);
+        Info temp2 = new Info(getNextTemp(), "int_SJ");
+        Info v1, v2;
+        ArrayList vs = new ArrayList<Info>();
+        for(int i=0;i<ctx.exp().size();i++){
+            vs.add(visitExp(ctx.exp(i)));
+        }
+
+        for(int i=0;i<ctx.exp().size()-1;i++){
+            v1 = visitExp(ctx.exp(i));
+            v2 = visitExp(ctx.exp(i+1));
+            q = new Quad(ctx.op_compare(i).getText(), temp2, v1, v2);
+            QT.add(q);
+            q = new Quad("AND", temp1, temp1, temp2);
+            QT.add(q);
+        }
+        return temp1;
+    }
     
     @Override public Info visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
         type = ctx.type().getText();

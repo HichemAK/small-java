@@ -19,7 +19,7 @@ public class Main {
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
             Small_JavaParser parser = new Small_JavaParser(token);
-            ParseTree pt = parser.exp();
+            ParseTree pt = parser.literal();
 
             MyVisitor visitor = new MyVisitor();
             visitor.visit(pt);

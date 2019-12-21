@@ -9,6 +9,11 @@ public class QuadTable extends ArrayList<Quad> {
     }
 
     @Override
+    public boolean add(Quad quad) {
+        return super.add(quad);
+    }
+
+    @Override
     public String toString() {
         String res = "";
         for(int i=0;i<size();i++){

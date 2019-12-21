@@ -100,7 +100,25 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         return visitChildren(ctx);
     }
     
-    @Override public Info visitExp(Small_JavaParser.ExpContext ctx) { return visitChildren(ctx); }
+    @Override public Info visitExp(Small_JavaParser.ExpContext ctx) {
+        Info v0 = visitFactor(ctx.factor(0));
+        if(ctx.factor().size() == 1){
+            return v0;
+        }
+        String t = getNextTemp();
+        Info temp = new Info(t, v0.type);
+        Quad q = new Quad(":=", temp, v0, null);
+        QT.add(q);
+        for(int i=1;i<ctx.factor().size();i++){
+            Info v = visitFactor(ctx.factor(i));
+            if(temp.type.equals("int_SJ") && v.type.equals("float_SJ")){
+                temp.type = "float_SJ";
+            }
+            q = new Quad(ctx.plus_minus(i-1).getText(), temp, temp, v);
+            QT.add(q);
+        }
+        return temp;
+    }
     
     @Override public Info visitFactor(Small_JavaParser.FactorContext ctx) {
         for(int i=1;i<ctx.v().size();i++){
@@ -131,7 +149,7 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
             q = new Quad(ctx.mul_div(i-1).getText(), temp, temp, v);
             QT.add(q);
         }
-        return new Info(t);
+        return temp;
     }
 
     @Override public Info visitV(Small_JavaParser.VContext ctx) {

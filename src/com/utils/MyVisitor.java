@@ -181,7 +181,9 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
 
     @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }
     
-    @Override public Info visitFactor_b(Small_JavaParser.Factor_bContext ctx) { return visitChildren(ctx); }
+    @Override public Info visitFactor_b(Small_JavaParser.Factor_bContext ctx) {
+        return visitChildren(ctx);
+    }
     
     @Override public Info visitLiteral(Small_JavaParser.LiteralContext ctx) {
         if(ctx.NOT() == null){
@@ -197,9 +199,8 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         if(ctx.exp_b() != null){
             return visitExp_b(ctx.exp_b());
         }
-        Info v0 = visitExp(ctx.exp(0));
         if(ctx.exp().size() == 1){
-            return v0;
+            return visitExp(ctx.exp(0));
         }
         Quad q;
         Info temp1 = new Info(getNextTemp(), "int_SJ");
@@ -207,14 +208,14 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         QT.add(q);
         Info temp2 = new Info(getNextTemp(), "int_SJ");
         Info v1, v2;
-        ArrayList vs = new ArrayList<Info>();
+        ArrayList<Info> vs = new ArrayList<Info>();
         for(int i=0;i<ctx.exp().size();i++){
             vs.add(visitExp(ctx.exp(i)));
         }
 
         for(int i=0;i<ctx.exp().size()-1;i++){
-            v1 = visitExp(ctx.exp(i));
-            v2 = visitExp(ctx.exp(i+1));
+            v1 = vs.get(i);
+            v2 = vs.get(i+1);
             q = new Quad(ctx.op_compare(i).getText(), temp2, v1, v2);
             QT.add(q);
             q = new Quad("AND", temp1, temp1, temp2);

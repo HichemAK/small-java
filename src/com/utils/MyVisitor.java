@@ -179,18 +179,34 @@ public class MyVisitor extends Small_JavaBaseVisitor<Info> {
         return null;
     }
 
-    @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) { return visitChildren(ctx); }
+    @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) {
+        if(ctx.factor_b().size() == 1){
+            return visitFactor_b(ctx.factor_b(0));
+        }
+        Info v1;
+        Quad q;
+        Info temp1 = new Info(getNextTemp(), "int_SJ");
+        q = new Quad(":=", temp1, new Info("0", "int_SJ"), null);
+        QT.add(q);
+        Info v0 = visitFactor_b(ctx.factor_b(0));
+        for(int i=1;i<ctx.factor_b().size();i++){
+            v1 = visitFactor_b(ctx.factor_b(i));
+            q = new Quad("OR", temp1, v0, v1);
+            QT.add(q);
+        }
+        return temp1;
+    }
     
     @Override public Info visitFactor_b(Small_JavaParser.Factor_bContext ctx) {
         if(ctx.literal().size() == 1){
             return visitLiteral(ctx.literal(0));
         }
-        Info v0 = visitLiteral(ctx.literal(0));
         Info v1;
         Quad q;
         Info temp1 = new Info(getNextTemp(), "int_SJ");
         q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
         QT.add(q);
+        Info v0 = visitLiteral(ctx.literal(0));
         for(int i=1;i<ctx.literal().size();i++){
             v1 = visitLiteral(ctx.literal(i));
             q = new Quad("AND", temp1, v0, v1);

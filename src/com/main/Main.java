@@ -3,6 +3,7 @@ package com.main;
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
 import com.utils.MyVisitor;
+import com.utils.SemanticVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -22,10 +23,21 @@ public class Main {
             ParseTree pt = parser.r();
             int num_errors = parser.getNumberOfSyntaxErrors();
             if (num_errors == 0){
-                MyVisitor visitor = new MyVisitor();
-                visitor.visit(pt);
-                System.out.println(visitor.getST());
-                System.out.println(visitor.getQT());
+                SemanticVisitor sem_visitor = new SemanticVisitor();
+                sem_visitor.visit(pt);
+                num_errors = sem_visitor.getNum_errors();
+                if(num_errors == 0){
+                    MyVisitor visitor = new MyVisitor();
+                    visitor.visit(pt);
+                    System.out.println(visitor.getST());
+                    System.out.println(visitor.getQT());
+                }
+                else{
+                    System.err.println("There are " + num_errors + " semantic errors.");
+                }
+            }
+            else{
+                System.err.println("There are " + num_errors + " syntaxic errors.");
             }
 
         }

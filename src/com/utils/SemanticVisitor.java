@@ -48,8 +48,9 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
             if(row.getType().equals("string_SJ") && ctx.string() == null){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: Cannot cast 'int_SJ/float_SJ' type to 'string_SJ' type");
+                num_errors++;
             }
-            num_errors++;
+
         }
         return visitChildren(ctx);
     }
@@ -89,7 +90,6 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: ERROR Division by Zero");
                 num_errors++;
-                return null;
             }
         }
         return visitChildren(ctx);
@@ -137,6 +137,12 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         if(ctx.BIB_LANG() != null){
             biblang_exist = true;
         }
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public Info visitClass_declare(Small_JavaParser.Class_declareContext ctx) {
+        checkIdfLength(ctx.CLASS_IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         return visitChildren(ctx);
     }
 }

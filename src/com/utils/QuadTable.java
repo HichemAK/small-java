@@ -10,6 +10,7 @@ public class QuadTable extends ArrayList<Quad> {
 
     @Override
     public boolean add(Quad quad) {
+        System.out.println(quad);
         return super.add(quad);
     }
 

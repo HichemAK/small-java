@@ -8,9 +8,10 @@ class_content : vars_declare main;
 vars_declare : var_declare*;
 main : MAIN_KW ACC_B instruction* ACC_E;
 instruction : assign | if_cond | read | write;
+instruction2 : instruction;
 
 assign : IDF ASSIGN (exp_b | string) SEMICOLON;
-if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction* ACC_E)?;
+if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction2* ACC_E)?;
 read : IN_KW PAR_B format COMMA IDF PAR_E SEMICOLON;
 write : OUT_KW PAR_B string (COMMA exp_b)* PAR_E SEMICOLON;
 

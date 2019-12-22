@@ -10,7 +10,6 @@ public class QuadTable extends ArrayList<Quad> {
 
     @Override
     public boolean add(Quad quad) {
-        System.out.println(quad);
         return super.add(quad);
     }
 
@@ -18,6 +17,7 @@ public class QuadTable extends ArrayList<Quad> {
     public String toString() {
         String res = "";
         for(int i=0;i<size();i++){
+            res += i +"\t";
             res += get(i).toString();
             res += "\n";
         }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     private SymbolTable ST = new SymbolTable();
     private QuadTable QT = new QuadTable();
-    private boolean biblang_exist = false;
-    private boolean bibio_exist = false;
     private int temp_n = 0;
+
+    public QuadVisitor(){}
 
     public QuadVisitor(SymbolTable ST){
         this.ST = ST;
@@ -37,15 +37,31 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             QT.add(q);
         }
         else if(ctx.string() != null){
-            q = new Quad(":=", new Info(r.getName(), r.getType()), visitString(ctx.string()), null);
-            QT.add(q);
+            return null; //TODO
         }
         return null;
     }
 
     @Override public Info visitIf_cond(Small_JavaParser.If_condContext ctx) {
-
-        return visitChildren(ctx);
+        Info cond = visitExp_b(ctx.exp_b());
+        Quad q1 = new Quad("BZ", null, cond, null);
+        Quad q2 = null;
+        QT.add(q1);
+        for(int i=0;i<ctx.instruction().size();i++){
+            visitInstruction(ctx.instruction(i));
+        }
+        if(ctx.ELSE_KW() != null){
+            q2 = new Quad("BR", null, null, null);
+            QT.add(q2);
+        }
+        q1.a = new Info("" + QT.size(), "adr");
+        if(ctx.ELSE_KW() != null){
+            for(int i=0;i<ctx.instruction2().size();i++){
+                visitInstruction2(ctx.instruction2(i));
+            }
+            q2.a = new Info("" + QT.size(), "adr");
+        }
+        return null;
     }
 
     @Override public Info visitRead(Small_JavaParser.ReadContext ctx) {

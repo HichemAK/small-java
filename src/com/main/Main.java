@@ -3,6 +3,8 @@ package com.main;
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
 import com.utils.MyVisitor;
+import com.utils.Quad;
+import com.utils.QuadVisitor;
 import com.utils.SemanticVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -15,7 +17,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args){
         try {
-            String source = "test.txt";
+            String source = "test_quads.txt";
             CharStream cs = fromFileName(source);
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -27,10 +29,10 @@ public class Main {
                 sem_visitor.visit(pt);
                 num_errors = sem_visitor.getNum_errors();
                 if(num_errors == 0){
-                    MyVisitor visitor = new MyVisitor();
-                    visitor.visit(pt);
-                    System.out.println(visitor.getST());
-                    System.out.println(visitor.getQT());
+                    QuadVisitor quad_visitor = new QuadVisitor(sem_visitor.getST());
+                    quad_visitor.visit(pt);
+                    System.out.println(quad_visitor.getST());
+                    System.out.println(quad_visitor.getQT());
                 }
                 else{
                     System.err.println("There are " + num_errors + " semantic errors.");

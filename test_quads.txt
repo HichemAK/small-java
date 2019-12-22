@@ -1,21 +1,16 @@
 import Small_Java.lang;
+import Small_Java.io;
 
-
-public class_SJ Classe222222222{
+public class_SJ Classe{
     int_SJ a;
-    float_SJ b,caaaaaaaaaaaa,d;
+    float_SJ b,ca,d;
     string_SJ str;
-    int_SJ a;
     main_SJ {
         a := 35 + 34;
         a := 35-23*a;
-        a := a/0;
         b := 3.5/3.6;
-        a := (str*2) + 5;
         str := "azdioaj";
-        str := 35-33;
-        c := (a+3) * (5-c) /(((4)));
-        hichem := 4;
+        a := (a+3) * (5-a) /(((4)));
         if (a+3)then{
             a := 3;
             str := "";
@@ -23,7 +18,7 @@ public class_SJ Classe222222222{
                 d := 4.5;
             }
             else{
-                c := 3;
+                d := 3;
                 Out_SJ("hahahah %d", a, b, d);
                 In_SJ(%d, a);
             }

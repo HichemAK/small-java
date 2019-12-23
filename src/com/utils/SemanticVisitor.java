@@ -51,7 +51,7 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
                 num_errors++;
             }
         }
-        return visitChildren(ctx);
+        return null;
     }
 
     @Override public Info visitIf_cond(Small_JavaParser.If_condContext ctx) {

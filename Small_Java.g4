@@ -12,7 +12,7 @@ instruction2 : instruction;
 
 assign : IDF ASSIGN (exp_b | string) SEMICOLON;
 if_cond : IF_KW PAR_B exp_b PAR_E THEN_KW ACC_B instruction* ACC_E (ELSE_KW ACC_B instruction2* ACC_E)?;
-read : IN_KW PAR_B format COMMA IDF PAR_E SEMICOLON;
+read : IN_KW PAR_B string COMMA IDF PAR_E SEMICOLON;
 write : OUT_KW PAR_B string (COMMA exp_b)* PAR_E SEMICOLON;
 
 
@@ -38,7 +38,6 @@ var_declare : type IDF (COMMA IDF)* SEMICOLON;
 bibs : (BIB_IO | BIB_LANG);
 type : (TYPE_INT | TYPE_FLOAT | TYPE_STRING);
 modif : (MODIF_PUBLIC | MODIF_PROTECTED) | ;
-format : FORMAT_INT | FORMAT_FLOAT | FORMAT_STRING;
 string : STRING;
 
 op_compare : G | GE | L | LE | E | NE;
@@ -82,10 +81,6 @@ ACC_E : '}';
 
 COMMA : ',';
 SEMICOLON : ';';
-
-FORMAT_INT : '%d';
-FORMAT_FLOAT : '%f';
-FORMAT_STRING : '%s';
 
 MODIF_PUBLIC : 'public';
 MODIF_PROTECTED : 'protected';

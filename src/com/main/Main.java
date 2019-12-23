@@ -2,6 +2,7 @@ package com.main;
 
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
+import com.utils.AssemblyTranslator;
 import com.utils.Quad;
 import com.utils.QuadVisitor;
 import com.utils.SemanticVisitor;
@@ -33,6 +34,9 @@ public class Main {
                     System.out.println(quad_visitor.getST());
                     System.out.println("\n\n");
                     System.out.println(quad_visitor.getQT());
+                    AssemblyTranslator AT = new AssemblyTranslator(quad_visitor.getST(), quad_visitor.getQT());
+                    System.out.println("\n\n");
+                    System.out.println(AT.translate());
                 }
                 else{
                     System.err.println("There are " + num_errors + " semantic errors.");

@@ -92,8 +92,6 @@ TYPE_INT : 'int_SJ';
 TYPE_FLOAT : 'float_SJ';
 TYPE_STRING : 'string_SJ';
 
-
-
 INT : [0-9]+;
 FLOAT : [0-9]+'.'[0-9]+;
 

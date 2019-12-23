@@ -83,13 +83,17 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     }
 
     @Override public Info visitRead(Small_JavaParser.ReadContext ctx) {
-
-        return visitChildren(ctx);
+        Row r = ST.get(ST.indexOf(ctx.IDF().getText()));
+        Quad q = new Quad("READ", new Info(r.getName(), r.getType()), visitString(ctx.string()), null);
+        QT.add(q);
+        return null;
     }
 
     @Override public Info visitWrite(Small_JavaParser.WriteContext ctx) {
-
-        return visitChildren(ctx);
+        Row r = ST.get(ST.indexOf(ctx.exp_b(0).getText()));
+        Quad q = new Quad("READ", new Info(r.getName(), r.getType()), visitString(ctx.string()), null);
+        QT.add(q);
+        return null;
     }
 
     @Override public Info visitExp(Small_JavaParser.ExpContext ctx) {
@@ -235,7 +239,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
 
     @Override
     public Info visitString(Small_JavaParser.StringContext ctx) {
-        Info temp = new Info(getNextStr(), "string_SJ", ctx.STRING().getText());
+        String str = ctx.STRING().getText();
+        Info temp = new Info(getNextStr(), "string_SJ", str.substring(1, str.length()-1));
         temps.add(temp);
         return temp;
     }

@@ -2,7 +2,6 @@ package com.main;
 
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
-import com.utils.MyVisitor;
 import com.utils.Quad;
 import com.utils.QuadVisitor;
 import com.utils.SemanticVisitor;
@@ -17,7 +16,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args){
         try {
-            String source = "test2.txt";
+            String source = "test_quads.txt";
             CharStream cs = fromFileName(source);
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);

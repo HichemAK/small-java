@@ -2,19 +2,19 @@ package com.utils;
 
 public class Row{
     private String name;
-    private int value;
+    private String value;
     private String type;
-    public Row(String name, String type, int value){
+    public Row(String name, String type, String value){
         this.name = name;
         this.value = value;
         this.type = type;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

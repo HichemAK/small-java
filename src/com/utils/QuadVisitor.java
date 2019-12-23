@@ -9,6 +9,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     private SymbolTable ST = new SymbolTable();
     private QuadTable QT = new QuadTable();
     private int temp_n = 0;
+    private int str_n = 0;
+    private ArrayList<Info> temps = new ArrayList<>();
 
     public QuadVisitor(){}
 
@@ -16,9 +18,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         this.ST = ST;
     }
 
-    public String getNextTemp(){
-        temp_n++;
-        return "T" + temp_n;
+    private String getNextTemp(){
+        return "_T" + temp_n++;
+    }
+
+    private String getNextStr(){
+        return "_STR" + str_n++;
     }
 
     public SymbolTable getST() {
@@ -29,6 +34,17 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         return QT;
     }
 
+    @Override
+    public Info visitR(Small_JavaParser.RContext ctx) {
+        visitChildren(ctx);
+        for(int i=0;i<temps.size();i++){
+            Info temp = temps.get(i);
+            Row r = new Row(temp.name, temp.type, temp.value);
+            ST.add(r);
+        }
+        return null;
+    }
+
     @Override public Info visitAssign(Small_JavaParser.AssignContext ctx) {
         Row r = ST.get(ST.indexOf(ctx.IDF().getText()));
         Quad q;
@@ -37,7 +53,9 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             QT.add(q);
         }
         else if(ctx.string() != null){
-            return null; //TODO
+            Info temp = visitString(ctx.string());
+            q = new Quad(":=", new Info(r.getName(), r.getType(), ""), temp, null);
+            QT.add(q);
         }
         return null;
     }
@@ -79,8 +97,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         if(ctx.factor().size() == 1){
             return v0;
         }
-        String t = getNextTemp();
-        Info temp = new Info(t, v0.type);
+        Info temp = new Info(getNextTemp(), v0.type, "");
+        temps.add(temp);
         Quad q = new Quad(":=", temp, v0, null);
         QT.add(q);
         for(int i=1;i<ctx.factor().size();i++){
@@ -99,8 +117,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         if(ctx.v().size() == 1){
             return v0;
         }
-        String t = getNextTemp();
-        Info temp = new Info(t, v0.type);
+        Info temp = new Info(getNextTemp(), v0.type, "");
+        temps.add(temp);
         Quad q = new Quad(":=", temp, v0, null);
         QT.add(q);
         for(int i=1;i<ctx.v().size();i++){
@@ -142,7 +160,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info v1;
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        temps.add(temp1);
         q = new Quad(":=", temp1, new Info("0", "int_SJ"), null);
         QT.add(q);
         Info v0 = visitFactor_b(ctx.factor_b(0));
@@ -160,7 +179,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info v1;
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        temps.add(temp1);
         q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
         QT.add(q);
         Info v0 = visitLiteral(ctx.literal(0));
@@ -190,10 +210,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             return visitExp(ctx.exp(0));
         }
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        temps.add(temp1);
         q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
         QT.add(q);
-        Info temp2 = new Info(getNextTemp(), "int_SJ");
+        Info temp2 = new Info(getNextTemp(), "int_SJ", "");
+        temps.add(temp2);
         Info v1, v2;
         ArrayList<Info> vs = new ArrayList<Info>();
         for(int i=0;i<ctx.exp().size();i++){
@@ -209,5 +231,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             QT.add(q);
         }
         return temp1;
+    }
+
+    @Override
+    public Info visitString(Small_JavaParser.StringContext ctx) {
+        Info temp = new Info(getNextStr(), "string_SJ", ctx.STRING().getText());
+        temps.add(temp);
+        return temp;
     }
 }

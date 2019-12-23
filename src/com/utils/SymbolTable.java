@@ -13,7 +13,7 @@ public class SymbolTable extends ArrayList<Row>{
         this.add(r);
     }
 
-    public int getValue(String id) {
+    public String getValue(String id) {
 
         int index = this.indexOf(id);
         return this.get(index).getValue();

@@ -45,12 +45,11 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         if(temp){
             Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
-            if(row.getType().equals("string_SJ") && ctx.string() == null){
+            if(row.getType().equals("string_SJ") && ctx.exp_b() != null && !visitExp_b(ctx.exp_b()).type.equals("string_SJ")){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: Cannot cast 'int_SJ/float_SJ' type to 'string_SJ' type");
                 num_errors++;
             }
-
         }
         return visitChildren(ctx);
     }
@@ -83,6 +82,25 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         return visitChildren(ctx);
     }
 
+    @Override public Info visitExp(Small_JavaParser.ExpContext ctx) {
+        if(ctx.factor().size() == 1){
+            return visitFactor(ctx.factor(0));
+        }
+        Info temp = visitFactor(ctx.factor(0));
+        for(int i=1;i<ctx.factor().size();i++){
+            Info info = visitFactor(ctx.factor(i));
+            String op = ctx.plus_minus(i-1).getText();
+            if(info.type.equals("float_SJ")){
+                temp.type = "float_SJ";
+            }
+            else if (info.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: '" + op + "' is impossible between '" + temp.type + "' and '" + info.type + "'" );
+                num_errors++;
+            }
+        }
+        return temp;
+    }
 
     @Override public Info visitFactor(Small_JavaParser.FactorContext ctx) {
         for(int i=1;i<ctx.v().size();i++){
@@ -92,7 +110,111 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
                 num_errors++;
             }
         }
-        return visitChildren(ctx);
+        if(ctx.v().size() == 1){
+            return visitV(ctx.v(0));
+        }
+        Info temp = visitV(ctx.v(0));
+        for(int i=1;i<ctx.v().size();i++){
+            Info info = visitV(ctx.v(i));
+            String op = ctx.mul_div(i-1).getText();
+            if(info.type.equals("float_SJ")){
+                temp.type = "float_SJ";
+            }
+            else if(temp.type.equals("int_SJ") && op.equals("/")){
+                temp.type = "float_SJ";
+            }
+            else if (info.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: '" + op + "' is impossible between '" + temp.type + "' and '" + info.type + "'" );
+                num_errors++;
+            }
+        }
+        return temp;
+    }
+
+    @Override public Info visitExp_b(Small_JavaParser.Exp_bContext ctx) {
+        if(ctx.factor_b().size() == 1){
+            return visitFactor_b(ctx.factor_b(0));
+        }
+        Info info;
+        String op = null;
+        for(int i=0;i<ctx.factor_b().size()-1;i++){
+            info = visitFactor_b(ctx.factor_b(i));
+            op = ctx.OR(i+1).getText();
+            if(info.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+                num_errors++;
+            }
+        }
+        if(visitFactor_b(ctx.factor_b(ctx.factor_b().size()-1)).type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+            num_errors++;
+        }
+        return new Info("", "int_SJ");
+    }
+
+    @Override public Info visitFactor_b(Small_JavaParser.Factor_bContext ctx) {
+        if(ctx.literal().size() == 1){
+            return visitLiteral(ctx.literal(0));
+        }
+        Info info;
+        String op = null;
+        for(int i=0;i<ctx.literal().size()-1;i++){
+            info = visitLiteral(ctx.literal(i));
+            op = ctx.AND(i+1).getText();
+            if(info.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+                num_errors++;
+            }
+        }
+        if(visitLiteral(ctx.literal(ctx.literal().size()-1)).type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+            num_errors++;
+        }
+        return new Info("", "int_SJ");
+    }
+
+    @Override public Info visitLiteral(Small_JavaParser.LiteralContext ctx) {
+        if(ctx.NOT() == null){
+            return visitAtom(ctx.atom());
+        }
+        Info v = visitAtom(ctx.atom());
+        if(v.type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: Cannot use 'string_SJ' type in '!' (NOT) operation" );
+            num_errors++;
+        }
+        return new Info("", "int_SJ");
+    }
+
+    @Override public Info visitAtom(Small_JavaParser.AtomContext ctx) {
+        if(ctx.exp_b() != null){
+            return visitExp_b(ctx.exp_b());
+        }
+        if(ctx.exp().size() == 1){
+            return visitExp(ctx.exp(0));
+        }
+        Info info;
+        String op = null;
+        for(int i=0;i<ctx.exp().size()-1;i++){
+            info = visitExp(ctx.exp(i));
+            op = ctx.op_compare(i+1).getText();
+            if(info.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+                num_errors++;
+            }
+        }
+        if(visitExp(ctx.exp(ctx.exp().size()-1)).type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");
+            num_errors++;
+        }
+        return new Info("", "int_SJ");
     }
 
     @Override public Info visitV(Small_JavaParser.VContext ctx) {
@@ -100,21 +222,27 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
             boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
             if(temp){
                 Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
-                if(row.getType().equals("string_SJ")){
-                    System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
-                            " :: Cannot use a 'string_SJ' variable in an arithmetic/boolean expression");
-                    num_errors++;
-                }
+                return new Info(row.getName(), row.getType());
             }
         }
-        return visitChildren(ctx);
+        else if(ctx.FLOAT() != null){
+            return new Info(ctx.FLOAT().getText(), "float_SJ");
+        }
+        else if (ctx.INT() != null){
+            return new Info(ctx.INT().getText(), "int_SJ");
+        }
+        else if(ctx.exp() != null){
+            return visitExp(ctx.exp());
+        }
+        return null;
     }
+
 
     @Override public Info visitVar_declare(Small_JavaParser.Var_declareContext ctx) {
         for(int i=0;i<ctx.IDF().size();i++){
             checkIdfLength(ctx.IDF(i).getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
             checkIfAlreadyDeclared(ctx.IDF(i).getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
-            ST.assign(new Row(ctx.IDF(i).getText(), ctx.type().getText(), 0));
+            ST.assign(new Row(ctx.IDF(i).getText(), ctx.type().getText(), ""));
         }
         return visitChildren(ctx);
     }

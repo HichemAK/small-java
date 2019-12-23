@@ -2,12 +2,12 @@ package com.utils;
 
 public class Info {
     public String name, type;
-    public int length;
+    public String value;
 
-    public Info(String name, String type, int length){
+    public Info(String name, String type, String value){
         this.name = name;
         this.type = type;
-        this.length = length;
+        this.value = value;
     }
 
     public Info(String name, String type){

@@ -140,7 +140,7 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     @Override public Info visitV(Small_JavaParser.VContext ctx) {
         if(ctx.IDF() != null){
             Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
-            return new Info("$" + row.getName(), row.getType());
+            return new Info(row.getName(), row.getType());
         }
         else if(ctx.FLOAT() != null){
             return new Info(ctx.FLOAT().getText(), "float_SJ");

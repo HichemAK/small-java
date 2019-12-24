@@ -21,14 +21,53 @@ public class Quad {
         res += "; " + toString() + "\n";
         switch (op){
             case ":=":
-                res += "MOV eax, " + value(b) + "\n";
-                res += "MOV " + value(a) + ", eax\n";
+                if(a.type.equals("string_SJ")){
+                    res += "MOV eax, " + b.name + "\n";
+                    res += "MOV " + a.name + ", eax\n";
+                }
+                else{
+                    res += "MOV eax, " + value(b) + "\n";
+                    res += "MOV " + value(a) + ", eax\n";
+                }
+
                 break;
             case "+":
-                res += "MOV eax, " + value(b) + "\n";
-                res += "ADD ebx, " + value(c) + "\n";
-                res += "MOV " + value(a) + ", ebx\n";
+                if(b.type.equals("int_SJ") && c.type.equals("int_SJ")){
+                    res += "MOV eax, " + value(b) + "\n";
+                    res += "ADD eax, " + value(c) + "\n";
+                    res += "MOV " + value(a) + ", eax\n";
+                }
+                else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")) {
+                    res += "FINIT\n";
+                    res += "FLD " + b.name + "\n";
+                    res += "FILD" + c.name + "\n";
+                    res += "FADD ST, ST(1)\n";
+                    res += "FST " + value(a) + "\n";
+                    res += "FWAIT\n";
+                }
 
+                else if(b.type.equals("float_SJ") && c.type.equals("float_SJ")) {
+                    res += "FINIT\n";
+                    res += "FLD " + b.name + "\n";
+                    res += "FLD" + c.name + "\n";
+                    res += "FADD ST, ST(1)\n";
+                    res += "FST " + value(a) + "\n";
+                    res += "FWAIT\n";
+                }
+                break;
+            case "CALL":
+                res += "CALL " + a.name + "\n";
+                break;
+            case "PUSH":
+                if(b.name.equals("value")){
+                    res += "PUSH DWORD [" + a.name + "]\n";
+                }
+                else if(b.name.equals("ref")){
+                    res += "PUSH DWORD " + a.name + "\n";
+                }
+                break;
+            case "DEPUSH":
+                res += "ADD ESP, " + a.name + "\n";
         }
         res += "\n";
         return res;

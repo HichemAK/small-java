@@ -84,14 +84,28 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
 
     @Override public Info visitRead(Small_JavaParser.ReadContext ctx) {
         Row r = ST.get(ST.indexOf(ctx.IDF().getText()));
-        Quad q = new Quad("READ", new Info(r.getName(), r.getType()), visitString(ctx.string()), null);
+        Quad q = new Quad("PUSH", new Info(r.getName(), r.getType()), new Info("ref"), null);
+        QT.add(q);
+        q = new Quad("PUSH", visitString(ctx.string()), new Info("ref"), null);
+        QT.add(q);
+        q = new Quad("CALL", new Info("_scanf"), null, null);
         QT.add(q);
         return null;
     }
 
     @Override public Info visitWrite(Small_JavaParser.WriteContext ctx) {
-        Row r = ST.get(ST.indexOf(ctx.exp_b(0).getText()));
-        Quad q = new Quad("READ", new Info(r.getName(), r.getType()), visitString(ctx.string()), null);
+        for(int i=ctx.exp_b().size()-1;i>=0;i--){
+            Quad q = new Quad("PUSH", visitExp_b(ctx.exp_b(i)), new Info("value"), null);
+            QT.add(q);
+        }
+        Info str = visitString(ctx.string());
+        str.value += ", 0xA, 0xD ";
+        Quad q = new Quad("PUSH", str, new Info("ref"), null);
+        QT.add(q);
+        q = new Quad("CALL", new Info("_printf"), null, null);
+        QT.add(q);
+        int pushnum = (ctx.exp_b().size() + 1) * 4;
+        q = new Quad("DEPUSH", new Info(String.valueOf(pushnum)),null, null);
         QT.add(q);
         return null;
     }
@@ -240,7 +254,7 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     @Override
     public Info visitString(Small_JavaParser.StringContext ctx) {
         String str = ctx.STRING().getText();
-        Info temp = new Info(getNextStr(), "string_SJ", str.substring(1, str.length()-1));
+        Info temp = new Info(getNextStr(), "string_SJ", "'" + str.substring(1, str.length()-1) + "'");
         temps.add(temp);
         return temp;
     }

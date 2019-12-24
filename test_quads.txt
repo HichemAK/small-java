@@ -10,7 +10,6 @@ public class_SJ Classe{
         a := 35-23*a;
         b := 3.5/3.6;
         str := "azdioaj";
-        a := (a+3) * (5-a) /(((4)));
         if (a+3)then{
             a := 3;
             str := "";

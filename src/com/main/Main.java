@@ -16,7 +16,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args){
         try {
-            String source = "test_quads.txt";
+            String source = "test2.txt";
             CharStream cs = fromFileName(source);
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -35,6 +35,8 @@ public class Main {
                     System.out.println(quad_visitor.getQT());
                     AssemblyTranslator AT = new AssemblyTranslator(quad_visitor.getST(), quad_visitor.getQT());
                     System.out.println("\n\n");
+                    String res = AT.translate();
+                    AssemblyTranslator.whenWriteStringUsingBufferedWritter_thenCorrect(res);
                     System.out.println(AT.translate());
                 }
                 else{

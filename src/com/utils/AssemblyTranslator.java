@@ -1,23 +1,42 @@
 package com.utils;
 
+import java.io.*;
+
 public class AssemblyTranslator {
     SymbolTable ST;
     QuadTable QT;
 
-    public AssemblyTranslator(SymbolTable ST, QuadTable QT){
+    public static void whenWriteStringUsingBufferedWritter_thenCorrect(String str)
+            throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("test.asm"));
+        writer.write(str);
+
+        writer.close();
+    }
+
+    public AssemblyTranslator(SymbolTable ST, QuadTable QT) throws IOException {
         this.ST = ST;
         this.QT = QT;
     }
 
     public String translate(){
-        String res = "section\t.text\n" +
-                "global _start\n" +
-                "extern _printf\n" +
-                "_start: \n";
+        String res = "";
+        res += ";;Assemble and link with\n" +
+                ";nasm -fwin32 hello.asm\n" +
+                ";gcc -o hello hello.obj\n" +
+                "\n" +
+                "global _main \n" +
+                "extern _scanf \n" +
+                "extern _printf     \n" +
+                "\n" +
+                "segment .text\n" +
+                "\n" +
+                "_main:\n";
 
         for (Quad q: QT) {
             res += q.translate();
         }
+        res += "ret \n";
         res += "section\t.data\n";
         for(Row r: ST){
             if(!r.getType().equals("string_SJ")){
@@ -26,9 +45,9 @@ public class AssemblyTranslator {
             else{
                 res += r.getName() + " db ";
                 if (r.getValue().length() != 0){
-                    res += "'" + r.getValue() + "'";
+                    res += r.getValue();
                 }
-                res += "\n";
+                res += ", 0\n";
             }
         }
         return res;

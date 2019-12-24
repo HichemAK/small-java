@@ -28,15 +28,7 @@ public class AssemblyTranslator {
                 "global _main \n" +
                 "extern _scanf \n" +
                 "extern _printf     \n" +
-                "\n" +
-                "segment .text\n" +
-                "\n" +
-                "_main:\n";
-
-        for (Quad q: QT) {
-            res += q.translate();
-        }
-        res += "ret \n";
+                "\n";
         res += "section\t.data\n";
         for(Row r: ST){
             if(!r.getType().equals("string_SJ")){
@@ -44,12 +36,20 @@ public class AssemblyTranslator {
             }
             else{
                 res += r.getName() + " db ";
-                if (r.getValue().length() != 0){
-                    res += r.getValue();
-                }
+                res += r.getValue();
                 res += ", 0\n";
             }
         }
+
+        res +=  "segment .text\n" +
+                "\n" +
+                "_main:\n";
+
+        for (Quad q: QT) {
+            res += q.translate();
+        }
+        res += "ret \n";
+
         return res;
     }
 }

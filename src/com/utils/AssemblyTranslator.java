@@ -35,7 +35,12 @@ public class AssemblyTranslator {
                 res += r.getName() + " dd 0\n";
             }
             else if (r.getType().equals("float_SJ")){
-                res += r.getName() + " dd " + r.getValue() + "\n";
+                if(r.getValue().length() == 0){
+                    res += r.getName() + " dd 0\n";
+                }
+                else {
+                    res += r.getName() + " dd " + r.getValue() + "\n";
+                }
             }
             else if (r.getType().equals("string_SJ")){
                 res += r.getName() + " db ";

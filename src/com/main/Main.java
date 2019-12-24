@@ -3,7 +3,6 @@ package com.main;
 import com.gen.Small_JavaParser;
 import com.gen.Small_JavaLexer;
 import com.utils.AssemblyTranslator;
-import com.utils.Quad;
 import com.utils.QuadVisitor;
 import com.utils.SemanticVisitor;
 import org.antlr.v4.runtime.CharStream;

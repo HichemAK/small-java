@@ -18,7 +18,7 @@ public class Quad {
 
     public String translate(){
         String res = "";
-        res += toString() + "\n";
+        res += "; " + toString() + "\n";
         switch (op){
             case ":=":
                 res += "MOV eax, " + value(b) + "\n";
@@ -38,7 +38,7 @@ public class Quad {
         if(isNumeric(a.name)){
             return a.name;
         }
-        return "offset " + a.name;
+        return '[' + a.name + ']';
     }
 
     public static boolean isNumeric(String str) {

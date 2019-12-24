@@ -31,10 +31,13 @@ public class AssemblyTranslator {
                 "\n";
         res += "section\t.data\n";
         for(Row r: ST){
-            if(!r.getType().equals("string_SJ")){
+            if(r.getType().equals("int_SJ")){
                 res += r.getName() + " dd 0\n";
             }
-            else{
+            else if (r.getType().equals("float_SJ")){
+                res += r.getName() + " dd " + r.getValue() + "\n";
+            }
+            else if (r.getType().equals("string_SJ")){
                 res += r.getName() + " db ";
                 res += r.getValue();
                 res += ", 0\n";

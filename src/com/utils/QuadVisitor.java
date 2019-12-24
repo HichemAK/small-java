@@ -169,7 +169,9 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             return new Info(row.getName(), row.getType());
         }
         else if(ctx.FLOAT() != null){
-            return new Info(ctx.FLOAT().getText(), "float_SJ");
+            Info temp = new Info(getNextTemp(), "float_SJ", ctx.FLOAT().getText());
+            temps.add(temp);
+            return temp;
         }
         else if (ctx.INT() != null){
             return new Info(ctx.INT().getText(), "int_SJ");

@@ -25,13 +25,15 @@ public class Quad {
                     res += "MOV eax, " + b.name + "\n";
                     res += "MOV " + a.name + ", eax\n";
                 }
-                else if(a.type.equals("int_SJ") && b.type.equals("int_SJ")){
+                else if(a.type.equals("int_SJ") && b.type.equals("int_SJ") || a.type.equals("float_SJ") && b.type.equals("float_SJ")){
                     res += "MOV eax, " + value(b) + "\n";
                     res += "MOV " + value(a) + ", eax\n";
                 }
                 else if(a.type.equals("float_SJ") && b.type.equals("int_SJ")){
-                    res += "FILD DWORD [" + b.name + "]\n";
-                    res += "FST DWORD " + a.name + "\n";
+                    res += "MOV eax, " + b.name + "\n";
+                    res += "MOV ebx, " + a.name + "\n";
+                    res += "FILD DWORD [eax]\n";
+                    res += "FSTP DWORD [ebx]\n";
                 }
 
                 break;
@@ -42,22 +44,104 @@ public class Quad {
                     res += "MOV " + value(a) + ", eax\n";
                 }
                 else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")) {
-                    res += "FINIT\n";
-                    res += "FLD DWORD [" + b.name + "]\n";
-                    res += "FILD DWORD [" + c.name + "]\n";
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FILD DWORD [ecx]\n";
                     res += "FADD ST0, ST1\n";
-                    res += "FST DWORD " + value(a) + "\n";
-                    res += "FWAIT\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
                 }
 
                 else if(b.type.equals("float_SJ") && c.type.equals("float_SJ")) {
-                    res += "FINIT\n";
-                    res += "FLD DWORD [" + b.name + "]\n";
-                    res += "FLD DWORD [" + c.name + "]\n";
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FLD DWORD [ecx]\n";
                     res += "FADD ST0, ST1\n";
-                    res += "FST DWORD " + value(a) + "\n";
-                    res += "FWAIT\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
                 }
+                break;
+            case "-":
+                if(b.type.equals("int_SJ") && c.type.equals("int_SJ")){
+                    res += "MOV eax, " + value(b) + "\n";
+                    res += "SUB eax, " + value(c) + "\n";
+                    res += "MOV " + value(a) + ", eax\n";
+                }
+                else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")) {
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FILD DWORD [ecx]\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FSUB ST0, ST1\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
+                }
+
+                else if(b.type.equals("float_SJ") && c.type.equals("float_SJ")) {
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FLD DWORD [ecx]\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FSUB ST0, ST1\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
+                }
+                break;
+            case "*":
+                if(b.type.equals("int_SJ") && c.type.equals("int_SJ")){
+                    res += "MOV eax, " + value(b) + "\n";
+                    res += "MOV ebx, " + value(c) + "\n";
+                    res += "IMUL ebx\n";
+                    res += "MOV " + value(a) + ", eax\n";
+                }
+                else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")) {
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FILD DWORD [ecx]\n";
+                    res += "FMUL ST0, ST1\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
+                }
+
+                else if(b.type.equals("float_SJ") && c.type.equals("float_SJ")) {
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "MOV ebx, " + b.name + "\n";
+                    res += "MOV ecx, " + c.name + "\n";
+                    res += "FLD DWORD [ebx]\n";
+                    res += "FLD DWORD [ecx]\n";
+                    res += "FMUL ST0, ST1\n";
+                    res += "FSTP DWORD [eax]\n";
+                    res += "FFREE ST1\n";
+                }
+                break;
+            case "/":
+                res += "MOV eax, " + a.name + "\n";
+                res += "MOV ebx, " + b.name + "\n";
+                res += "MOV ecx, " + c.name + "\n";
+                if(c.type.equals("int_SJ")){
+                    res += "FILD DWORD [ecx]\n";
+                }
+                else{
+                    res += "FLD DWORD [ecx]\n";
+                }
+
+                if(b.type.equals("int_SJ")){
+                    res += "FILD DWORD [ebx]\n";
+                }
+                else{
+                    res += "FLD DWORD [ebx]\n";
+                }
+                res += "FDIV ST0, ST1\n";
+                res += "FSTP DWORD [eax]\n";
+                res += "FFREE ST1\n";
                 break;
             case "CALL":
                 res += "CALL " + a.name + "\n";

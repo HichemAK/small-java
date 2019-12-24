@@ -45,12 +45,16 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         boolean temp = checkIfDeclared(ctx.IDF().getText(), ctx.stop.getLine(), ctx.stop.getCharPositionInLine());
         if(temp){
             Row row = ST.get(ST.indexOf(ctx.IDF().getText()));
-            if(row.getType().equals("string_SJ") && ctx.exp_b() != null && !visitExp_b(ctx.exp_b()).type.equals("string_SJ")){
+            Info exp = null;
+            if(ctx.exp_b() != null){
+                exp = visitExp_b(ctx.exp_b());
+            }
+            if(row.getType().equals("string_SJ") && exp != null && !exp.type.equals("string_SJ")){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: Cannot cast 'int_SJ/float_SJ' type to 'string_SJ' type");
                 num_errors++;
             }
-            else if(row.getType().equals("int_SJ") && ctx.exp_b() != null && visitExp_b(ctx.exp_b()).type.equals("float_SJ")){
+            else if(row.getType().equals("int_SJ") && exp != null && exp.type.equals("float_SJ")){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: Cannot cast 'float_SJ' type to 'int_SJ' type");
                 num_errors++;

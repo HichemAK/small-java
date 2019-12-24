@@ -32,7 +32,12 @@ public class AssemblyTranslator {
         res += "section\t.data\n";
         for(Row r: ST){
             if(r.getType().equals("int_SJ")){
-                res += r.getName() + " dd 0\n";
+                if(r.getValue().length() == 0){
+                    res += r.getName() + " dd 0\n";
+                }
+                else {
+                    res += r.getName() + " dd " + r.getValue() + "\n";
+                }
             }
             else if (r.getType().equals("float_SJ")){
                 if(r.getValue().length() == 0){

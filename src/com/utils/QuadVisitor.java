@@ -174,7 +174,9 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             return temp;
         }
         else if (ctx.INT() != null){
-            return new Info(ctx.INT().getText(), "int_SJ");
+            Info temp = new Info(getNextTemp(), "int_SJ", ctx.INT().getText());
+            temps.add(temp);
+            return temp;
         }
         else if(ctx.exp() != null){
             return visitExp(ctx.exp());

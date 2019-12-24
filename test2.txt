@@ -5,7 +5,7 @@ public class_SJ Classe{
     float_SJ a;
     float_SJ b;
     main_SJ {
-        a := 23.54;
+        a := 23;
         b := 10.23;
         Out_SJ("%f + %f = %f", a, b, a + b);
     }

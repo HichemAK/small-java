@@ -25,13 +25,13 @@ public class Quad {
                     res += "MOV eax, " + b.name + "\n";
                     res += "MOV " + a.name + ", eax\n";
                 }
-                else if(b.type.equals("int_SJ") && c.type.equals("int_SJ")){
+                else if(a.type.equals("int_SJ") && b.type.equals("int_SJ")){
                     res += "MOV eax, " + value(b) + "\n";
                     res += "MOV " + value(a) + ", eax\n";
                 }
-                else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")){
-                    res += "MOV eax, " + value(c) + "\n";
-                    res += 
+                else if(a.type.equals("float_SJ") && b.type.equals("int_SJ")){
+                    res += "FILD DWORD [" + b.name + "]\n";
+                    res += "FST DWORD " + a.name + "\n";
                 }
 
                 break;

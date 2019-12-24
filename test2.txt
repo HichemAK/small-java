@@ -2,13 +2,9 @@ import Small_Java.lang;
 import Small_Java.io;
 
 public class_SJ Classe{
-    int_SJ a;
-    int_SJ b;
+    float_SJ a;
     main_SJ {
-        a := 2;
-        b := 5;
-        Out_SJ("%d", a);
-        In_SJ("%d", a);
-        Out_SJ("%d", a+b);
+        a := 23.54;
+        Out_SJ("%f", a);
     }
 }

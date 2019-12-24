@@ -95,7 +95,15 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
 
     @Override public Info visitWrite(Small_JavaParser.WriteContext ctx) {
         for(int i=ctx.exp_b().size()-1;i>=0;i--){
-            Quad q = new Quad("PUSH", visitExp_b(ctx.exp_b(i)), new Info("value"), null);
+            Info exp = visitExp_b(ctx.exp_b(i));
+            Quad q;
+            if(exp.type.equals("float_SJ")){
+                q = new Quad("PRINT_FLOAT", exp, null, null);
+            }
+            else{
+                q = new Quad("PUSH", exp, new Info("value"), null);
+            }
+
             QT.add(q);
         }
         Info str = visitString(ctx.string());

@@ -68,6 +68,12 @@ public class Quad {
                 break;
             case "DEPUSH":
                 res += "ADD ESP, " + a.name + "\n";
+                break;
+            case "PRINT_FLOAT":
+                res += "SUB esp, 8\n"
+                        + "MOV eax, " + a.name + "\n"
+                        + "FLD DWORD [eax]\n"
+                        + "FSTP QWORD [esp]\n";
         }
         res += "\n";
         return res;

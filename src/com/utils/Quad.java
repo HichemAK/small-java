@@ -39,10 +39,10 @@ public class Quad {
                 }
                 else if(b.type.equals("float_SJ") && c.type.equals("int_SJ")) {
                     res += "FINIT\n";
-                    res += "FLD " + b.name + "\n";
-                    res += "FILD" + c.name + "\n";
-                    res += "FADD ST, ST(1)\n";
-                    res += "FST " + value(a) + "\n";
+                    res += "FLD DWORD [" + b.name + "]\n";
+                    res += "FILD DWORD [" + c.name + "]\n";
+                    res += "FADD ST0, ST1\n";
+                    res += "FST DWORD " + value(a) + "\n";
                     res += "FWAIT\n";
                 }
 

@@ -3,10 +3,10 @@ import Small_Java.io;
 
 public class_SJ Classe{
     float_SJ a;
-    int_SJ b;
+    float_SJ b;
     main_SJ {
         a := 23.54;
-        b := 10;
-        Out_SJ("%f + %d = %f", a, b, a + b);
+        b := 10.23;
+        Out_SJ("%f + %f = %f", a, b, a + b);
     }
 }

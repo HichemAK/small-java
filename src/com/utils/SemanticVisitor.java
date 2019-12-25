@@ -209,9 +209,10 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info info;
         String op = null;
+        System.out.println(ctx.op_compare().size());
         for(int i=0;i<ctx.exp().size()-1;i++){
             info = visitExp(ctx.exp(i));
-            op = ctx.op_compare(i+1).getText();
+            op = ctx.op_compare(i).getText();
             if(info.type.equals("string_SJ")){
                 System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
                         " :: '" + op + "' is impossible if one the operands is of type 'string_SJ'");

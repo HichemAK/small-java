@@ -4,8 +4,29 @@ import Small_Java.io;
 public class_SJ Classe{
     int_SJ a;
     float_SJ b;
+    string_SJ str1;
     main_SJ {
-        b := 1/3;
-        Out_SJ("%f", b);
+        a:= 1;
+        if(a) then {
+            a := 0;
+            if(a) then{
+                Out_SJ("IF IF BLOC");
+            }
+            else{
+                Out_SJ("IF ELSE BLOC");
+            }
+        }
+        else{
+            a := 1;
+            if(a) then{
+                Out_SJ("ELSE IF BLOC");
+            }
+            else{
+                Out_SJ("ELSE ELSE BLOC");
+            }
+        }
+        Out_SJ("FINISHED");
+        str1 := "HICHEM AMMARKHODJA";
+        Out_SJ("%s", str1);
     }
 }

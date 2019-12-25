@@ -1,10 +1,12 @@
 package com.utils;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class AssemblyTranslator {
     SymbolTable ST;
     QuadTable QT;
+    ArrayList<Row> bss = new ArrayList<>();
 
     public static void whenWriteStringUsingBufferedWritter_thenCorrect(String str)
             throws IOException {
@@ -43,14 +45,30 @@ public class AssemblyTranslator {
                 if(r.getValue().length() == 0){
                     res += r.getName() + " dd 0\n";
                 }
-                else {
+                else if(r.getValue().contains(".")){
                     res += r.getName() + " dd " + r.getValue() + "\n";
+                }
+                else{
+                    res += r.getName() + " dd " + r.getValue() + ".0\n";
                 }
             }
             else if (r.getType().equals("string_SJ")){
-                res += r.getName() + " db ";
-                res += r.getValue();
-                res += ", 0\n";
+                if(r.getValue().length() > 0){
+                    res += r.getName() + " db ";
+                    res += r.getValue();
+                    res += ", 0\n";
+                }
+                else{
+                    bss.add(r);
+                }
+
+            }
+        }
+        res += "\n";
+        if(bss.size()>0){
+            res += "segment .bss\n";
+            for(Row r : bss){
+                res += r.getName() + " resb 200\n";
             }
         }
 

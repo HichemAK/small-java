@@ -42,6 +42,7 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             Row r = new Row(temp.name, temp.type, temp.value);
             ST.add(r);
         }
+        QT.add(new Quad("END", null, null, null));
         return null;
     }
 
@@ -72,12 +73,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             q2 = new Quad("BR", null, null, null);
             QT.add(q2);
         }
-        q1.a = new Info("" + QT.size(), "adr");
+        q1.a = new Info("_QUAD" + QT.size(), "adr");
         if(ctx.ELSE_KW() != null){
             for(int i=0;i<ctx.instruction2().size();i++){
                 visitInstruction2(ctx.instruction2(i));
             }
-            q2.a = new Info("" + QT.size(), "adr");
+            q2.a = new Info("_QUAD" + QT.size(), "adr");
         }
         return null;
     }
@@ -101,7 +102,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
                 q = new Quad("PRINT_FLOAT", exp, null, null);
             }
             else{
-                q = new Quad("PUSH", exp, new Info("value"), null);
+                if(exp.type.equals("string_SJ")){
+                    q = new Quad("PUSH", exp, new Info("ref"), null);
+                }
+                else{
+                    q = new Quad("PUSH", exp, new Info("value"), null);
+                }
             }
 
             QT.add(q);
@@ -119,14 +125,11 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     }
 
     @Override public Info visitExp(Small_JavaParser.ExpContext ctx) {
-        Info v0 = visitFactor(ctx.factor(0));
+        Info temp = visitFactor(ctx.factor(0));
         if(ctx.factor().size() == 1){
-            return v0;
+            return temp;
         }
-        Info temp = new Info(getNextTemp(), v0.type, "");
-        temps.add(temp);
-        Quad q = new Quad(":=", temp, v0, null);
-        QT.add(q);
+        Quad q;
         for(int i=1;i<ctx.factor().size();i++){
             Info v = visitFactor(ctx.factor(i));
             if(temp.type.equals("int_SJ") && v.type.equals("float_SJ")){
@@ -139,14 +142,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     }
 
     @Override public Info visitFactor(Small_JavaParser.FactorContext ctx) {
-        Info v0 = visitV(ctx.v(0));
+        Info temp = visitV(ctx.v(0));
         if(ctx.v().size() == 1){
-            return v0;
+            return temp;
         }
-        Info temp = new Info(getNextTemp(), v0.type, "");
-        temps.add(temp);
-        Quad q = new Quad(":=", temp, v0, null);
-        QT.add(q);
+
+        Quad q;
         for(int i=1;i<ctx.v().size();i++){
             Info v = visitV(ctx.v(i));
             if(ctx.mul_div(i-1).DIV() != null){
@@ -190,10 +191,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info v1;
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "1");
         temps.add(temp1);
-        q = new Quad(":=", temp1, new Info("0", "int_SJ"), null);
-        QT.add(q);
         Info v0 = visitFactor_b(ctx.factor_b(0));
         for(int i=1;i<ctx.factor_b().size();i++){
             v1 = visitFactor_b(ctx.factor_b(i));
@@ -209,10 +208,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info v1;
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "1");
         temps.add(temp1);
-        q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
-        QT.add(q);
         Info v0 = visitLiteral(ctx.literal(0));
         for(int i=1;i<ctx.literal().size();i++){
             v1 = visitLiteral(ctx.literal(i));
@@ -240,10 +237,8 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             return visitExp(ctx.exp(0));
         }
         Quad q;
-        Info temp1 = new Info(getNextTemp(), "int_SJ", "");
+        Info temp1 = new Info(getNextTemp(), "int_SJ", "1");
         temps.add(temp1);
-        q = new Quad(":=", temp1, new Info("1", "int_SJ"), null);
-        QT.add(q);
         Info temp2 = new Info(getNextTemp(), "int_SJ", "");
         temps.add(temp2);
         Info v1, v2;

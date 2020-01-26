@@ -59,6 +59,16 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
                         " :: Cannot cast 'float_SJ' type to 'int_SJ' type");
                 num_errors++;
             }
+            else if(!row.getType().equals("string_SJ") && ctx.string() != null){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: Cannot cast 'string_SJ' type to 'int_SJ/float_SJ' type");
+                num_errors++;
+            }
+            else if(!row.getType().equals("string_SJ") && exp != null && exp.type.equals("string_SJ")){
+                System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                        " :: Cannot cast 'string_SJ' type to 'int_SJ/float_SJ' type");
+                num_errors++;
+            }
         }
         return null;
     }
@@ -209,7 +219,6 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
         }
         Info info;
         String op = null;
-        System.out.println(ctx.op_compare().size());
         for(int i=0;i<ctx.exp().size()-1;i++){
             info = visitExp(ctx.exp(i));
             op = ctx.op_compare(i).getText();

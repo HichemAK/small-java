@@ -3,7 +3,7 @@ import Small_Java.io;
 
 public class_SJ Classe{
     int_SJ a, b;
-    float_SJ c;
+    int_SJ c;
     string_SJ str1;
     main_SJ {
         c := 0;

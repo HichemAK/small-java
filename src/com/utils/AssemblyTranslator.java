@@ -24,8 +24,8 @@ public class AssemblyTranslator {
     public String translate(){
         String res = "";
         res += ";;Assemble and link with\n" +
-                ";nasm -fwin32 hello.asm\n" +
-                ";gcc -o hello hello.obj\n" +
+                ";nasm -fwin32 test.asm\n" +
+                ";gcc -o hello test.obj\n" +
                 "\n" +
                 "global _main \n" +
                 "extern _scanf \n" +

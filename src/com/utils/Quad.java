@@ -16,11 +16,11 @@ public class Quad {
     }
 
     private String getNextQuad(){
-        return "_QUAD" + quad_num++;
+        return "__QUAD" + quad_num++;
     }
 
     public String getNextJump(){
-        return "_JUMP" + jump_num++;
+        return "__JUMP" + jump_num++;
     }
 
 

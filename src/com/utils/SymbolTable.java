@@ -10,6 +10,7 @@ public class SymbolTable extends ArrayList<Row>{
             this.get(index).setValue(r.getValue());
             return;
         }
+        r.setName("_" + r.getName());
         this.add(r);
     }
 
@@ -23,7 +24,7 @@ public class SymbolTable extends ArrayList<Row>{
     public int indexOf(Object o) {
         String str = (String) o;
         for(int i=0;i<this.size();i++){
-            if(this.get(i).getName().equals(str)){
+            if(this.get(i).getName().equals("_" + str)){
                 return i;
             }
         }
@@ -34,7 +35,7 @@ public class SymbolTable extends ArrayList<Row>{
     public boolean contains(Object o) {
         String str = (String) o;
         for(int i=0;i<this.size();i++){
-            if(this.get(i).getName().equals(str)){
+            if(this.get(i).getName().equals("_" + str)){
                 return true;
             }
         }

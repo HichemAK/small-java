@@ -19,11 +19,11 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     }
 
     private String getNextTemp(){
-        return "_T" + temp_n++;
+        return "__T" + temp_n++;
     }
 
     private String getNextStr(){
-        return "_STR" + str_n++;
+        return "__STR" + str_n++;
     }
 
     public SymbolTable getST() {
@@ -73,12 +73,12 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             q2 = new Quad("BR", null, null, null);
             QT.add(q2);
         }
-        q1.a = new Info("_QUAD" + QT.size(), "adr");
+        q1.a = new Info("__QUAD" + QT.size(), "adr");
         if(ctx.ELSE_KW() != null){
             for(int i=0;i<ctx.instruction2().size();i++){
                 visitInstruction2(ctx.instruction2(i));
             }
-            q2.a = new Info("_QUAD" + QT.size(), "adr");
+            q2.a = new Info("__QUAD" + QT.size(), "adr");
         }
         return null;
     }

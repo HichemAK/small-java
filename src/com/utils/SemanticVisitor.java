@@ -106,6 +106,11 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
             return visitFactor(ctx.factor(0));
         }
         Info temp = visitFactor(ctx.factor(0));
+        if(temp.type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: '" + ctx.plus_minus(0).getText() + "' is impossible between '" + temp.type + "' and '" + temp.type + "'" );
+            num_errors++;
+        }
         for(int i=1;i<ctx.factor().size();i++){
             Info info = visitFactor(ctx.factor(i));
             String op = ctx.plus_minus(i-1).getText();
@@ -133,6 +138,11 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
             return visitV(ctx.v(0));
         }
         Info temp = visitV(ctx.v(0));
+        if(temp.type.equals("string_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: '" + ctx.mul_div(0).getText() + "' is impossible between '" + temp.type + "' and '" + temp.type + "'" );
+            num_errors++;
+        }
         for(int i=1;i<ctx.v().size();i++){
             Info info = visitV(ctx.v(i));
             String op = ctx.mul_div(i-1).getText();

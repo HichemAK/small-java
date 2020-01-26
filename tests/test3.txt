@@ -2,12 +2,12 @@ import Small_Java.lang;
 import Small_Java.io;
 
 public class_SJ Classe{
-    string_SJ a, b;
+    int_SJ a, b;
     float_SJ c;
     string_SJ str1;
     main_SJ {
         str1 := "haha";
-        a := str1 / str1 / str1 / str1;
+        a := str1 + str1 + str1 + str1;
         Out_SJ("%s", a);
     }
 }

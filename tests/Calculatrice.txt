@@ -1,0 +1,38 @@
+import Small_Java.lang;
+import Small_Java.io;
+
+public class_SJ Classe{
+
+    int_SJ a,b;
+    int_SJ c;
+    float_SJ d;
+
+    main_SJ {
+        Out_SJ("Bienvenue dans la calculette de la calculette");
+        Out_SJ("Veuillez choisir le type doperation");
+        Out_SJ("1 Addition");
+        Out_SJ("2 Soustraction");
+        Out_SJ("3 Multiplication");
+        Out_SJ("4 Division");
+
+        In_SJ ("%d", c);
+        Out_SJ("Veuillez choisir le premier nombre : " );
+        In_SJ("%d", a);
+        Out_SJ("Veuillez choisir le deuxieme nombre : " );
+        In_SJ("%d", b);
+
+        if (c = 1) then {
+                    d := a+b
+                ;}
+        if (c = 2) then {
+                    d := a-b
+                ;}
+        if (c = 3) then {
+                    d := a*b
+                ;}
+        if (c = 4) then {
+                    d := a/b
+                ;}
+        Out_SJ("Le resultat est : %f", d);
+    }
+}

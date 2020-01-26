@@ -1,0 +1,35 @@
+import Small_Java.lang;
+import Small_Java.io;
+
+public class_SJ Classe{
+
+    string_SJ a,c ;
+    int_SJ b;
+    int_SJ n;
+
+
+    main_SJ {
+        Out_SJ ("Veuillez indiquez votre prenom : ");
+        In_SJ ("%s",a);
+
+        Out_SJ ("Veuillez indiquez votre age : ");
+        In_SJ ("%d",b);
+
+        if (b <= 10)then{
+            n:=0;
+            c:="Enfant";
+
+        }
+
+        if (10<b<=20)then{
+            n:=1;
+            c:="Adolescent";
+        }
+        if (b>20)then{
+            n:=2;
+            c := "Adulte";
+        }
+        Out_SJ ("Votre prenom est %s et votre age est de %d ans",a,b);
+        Out_SJ ("Vous faites partie de la tranche dage des %s",c);
+    }
+}

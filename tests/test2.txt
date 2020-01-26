@@ -2,14 +2,14 @@ import Small_Java.lang;
 import Small_Java.io;
 
 public class_SJ Classe{
-    int_SJ a;
-    float_SJ b;
+    int_SJ a, b;
+    float_SJ c;
     string_SJ str1;
     main_SJ {
         a:= 1;
-        if(a) then {
-            a := 0;
-            if(a) then{
+        if(a = 1) then {
+            b := 0;
+            if(b) then{
                 Out_SJ("IF IF BLOC");
             }
             else{
@@ -17,8 +17,8 @@ public class_SJ Classe{
             }
         }
         else{
-            a := 1;
-            if(a) then{
+            b := 1;
+            if(b) then{
                 Out_SJ("ELSE IF BLOC");
             }
             else{
@@ -26,7 +26,8 @@ public class_SJ Classe{
             }
         }
         Out_SJ("FINISHED");
-        str1 := "HICHEM AMMARKHODJA";
-        Out_SJ("%s", str1);
+        Out_SJ("Donnez votre nom : ");
+        In_SJ("%s", str1);
+        Out_SJ("Votre nom est : %s", str1);
     }
 }

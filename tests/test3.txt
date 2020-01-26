@@ -6,8 +6,10 @@ public class_SJ Classe{
     float_SJ c;
     string_SJ str1;
     main_SJ {
-        str1 := "haha";
-        a := str1 + str1 + str1 + str1;
-        Out_SJ("%s", a);
+        c := 0;
+        if(c) then{
+            Out_SJ("HAHAHA");
+        }
+        Out_SJ("HIHIHIHI");
     }
 }

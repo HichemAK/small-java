@@ -79,6 +79,11 @@ public class SemanticVisitor extends Small_JavaBaseVisitor<Info> {
                     " :: Cannot use assign IF condition without importing Small_Java.lang");
             num_errors++;
         }
+        if(!visitExp_b(ctx.exp_b()).type.equals("int_SJ")){
+            System.err.println(ctx.stop.getLine()+ ":" + ctx.stop.getCharPositionInLine() +
+                    " :: The condition in an IF statement must be of type 'int_SJ'");
+            num_errors++;
+        }
         return visitChildren(ctx);
     }
 

@@ -3,7 +3,7 @@ import Small_Java.io;
 
 public class_SJ Classe{
 
-    int_SJ a,b;
+    float_SJ a,b;
     int_SJ c;
     float_SJ d;
 
@@ -17,9 +17,9 @@ public class_SJ Classe{
 
         In_SJ ("%d", c);
         Out_SJ("Veuillez choisir le premier nombre : " );
-        In_SJ("%d", a);
+        In_SJ("%f", a);
         Out_SJ("Veuillez choisir le deuxieme nombre : " );
-        In_SJ("%d", b);
+        In_SJ("%f", b);
 
         if (c = 1) then {
                     d := a+b

@@ -6,7 +6,7 @@ public class_SJ Classe{
     int_SJ c;
     string_SJ str1;
     main_SJ {
-        c := 0;
+        c := 5/2;
         if(c) then{
             Out_SJ("HAHAHA");
         }

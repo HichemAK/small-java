@@ -18,7 +18,7 @@ public class_SJ Classe{
             }
             else{
                 d := 3;
-                Out_SJ("hahahah %d", a, b, d);
+                Out_SJ("hahahah %d", a);
                 In_SJ("%d", a);
             }
         }

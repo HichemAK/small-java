@@ -1,0 +1,27 @@
+import Small_Java.lang;
+import Small_Java.io;
+
+public class_SJ Classe{
+    int_SJ a, b;
+    main_SJ {
+        a:= 0;
+        b := 1;
+        if(a) then {
+            if(b) then{
+                Out_SJ("IF IF BLOC");
+            }
+            else{
+                Out_SJ("IF ELSE BLOC");
+            }
+        }
+        else{
+            if(b) then{
+                Out_SJ("ELSE IF BLOC");
+            }
+            else{
+                Out_SJ("ELSE ELSE BLOC");
+            }
+        }
+        Out_SJ("FINISHED");
+    }
+}

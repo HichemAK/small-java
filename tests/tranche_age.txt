@@ -5,28 +5,26 @@ public class_SJ Classe{
 
     string_SJ a,c ;
     int_SJ b;
-    int_SJ n;
 
 
     main_SJ {
-        Out_SJ ("Veuillez indiquez votre prenom : ");
+        Out_SJ ("Veuillez indiquez votre nom : ");
         In_SJ ("%s",a);
 
         Out_SJ ("Veuillez indiquez votre age : ");
         In_SJ ("%d",b);
 
-        if (b <= 10)then{
-            n:=0;
+        c := "Inconnu";
+
+        if (0 <= b <= 10)then{
             c:="Enfant";
 
         }
 
         if (10<b<=20)then{
-            n:=1;
             c:="Adolescent";
         }
         if (b>20)then{
-            n:=2;
             c := "Adulte";
         }
         Out_SJ ("Votre prenom est %s et votre age est de %d ans",a,b);

@@ -3,8 +3,6 @@ out/*
 .idea/*
 TP_COMPIL.iml
 test.obj
-hello.exe
-hello.obj
 test.exe
 test.o
 test.asm

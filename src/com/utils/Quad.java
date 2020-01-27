@@ -94,6 +94,8 @@ public class Quad {
                     res += "FFREE ST1\n";
                 }
 
+
+
                 else if(b.type.equals("float_SJ") && c.type.equals("float_SJ")) {
                     res += "MOV eax, " + a.name + "\n";
                     res += "MOV ebx, " + b.name + "\n";
@@ -154,6 +156,19 @@ public class Quad {
                 res += "FDIV ST0, ST1\n";
                 res += "FSTP DWORD [eax]\n";
                 res += "FFREE ST1\n";
+                break;
+            case "NEG":
+                if(a.type.equals("int_SJ")){
+                    res += "MOV EAX, [" + a.name + "]\n";
+                    res += "NEG EAX\n";
+                    res += "MOV [" + a.name + "], EAX\n";
+                }
+                else if(a.type.equals("float_SJ")){
+                    res += "MOV eax, " + a.name + "\n";
+                    res += "FLD DWORD [eax]\n";
+                    res += "FCHS\n";
+                    res += "FSTP DWORD [eax]\n";
+                }
                 break;
             case "OR":
                 res += "MOV eax, " + value(b) + "\n";

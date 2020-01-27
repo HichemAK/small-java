@@ -2,14 +2,9 @@ import Small_Java.lang;
 import Small_Java.io;
 
 public class_SJ Classe{
-    int_SJ a, b;
-    int_SJ c;
-    string_SJ str1;
+    float_SJ c;
     main_SJ {
-        c := 5/2;
-        if(c) then{
-            Out_SJ("HAHAHA");
-        }
-        Out_SJ("HIHIHIHI");
+        c := -5;
+        Out_SJ("%f", c);
     }
 }

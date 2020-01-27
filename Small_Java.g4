@@ -16,7 +16,7 @@ read : IN_KW PAR_B string COMMA IDF PAR_E SEMICOLON;
 write : OUT_KW PAR_B string (COMMA exp_b)* PAR_E SEMICOLON;
 
 
-exp : factor
+exp : MINUS? factor
 	(plus_minus factor)*;
 
 factor  : v

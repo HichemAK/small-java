@@ -125,11 +125,15 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     }
 
     @Override public Info visitExp(Small_JavaParser.ExpContext ctx) {
+        Quad q;
         Info temp = visitFactor(ctx.factor(0));
+        if(ctx.MINUS() != null){
+            q = new Quad("NEG", temp, null, null);
+            QT.add(q);
+        }
         if(ctx.factor().size() == 1){
             return temp;
         }
-        Quad q;
         for(int i=1;i<ctx.factor().size();i++){
             Info v = visitFactor(ctx.factor(i));
             if(temp.type.equals("int_SJ") && v.type.equals("float_SJ")){

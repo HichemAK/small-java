@@ -8,12 +8,12 @@ public class_SJ Classe{
     float_SJ d;
 
     main_SJ {
-        Out_SJ("Bienvenue dans la calculette de la calculette");
-        Out_SJ("Veuillez choisir le type doperation");
-        Out_SJ("1 Addition");
-        Out_SJ("2 Soustraction");
-        Out_SJ("3 Multiplication");
-        Out_SJ("4 Division");
+        Out_SJ("Bienvenue dans la calculatrice\n");
+        Out_SJ("Veuillez choisir le type d'operation\n");
+        Out_SJ("1- Addition\n");
+        Out_SJ("2- Soustraction\n");
+        Out_SJ("3- Multiplication\n");
+        Out_SJ("4- Division\n");
 
         In_SJ ("%d", c);
         Out_SJ("Veuillez choisir le premier nombre : " );
@@ -33,6 +33,6 @@ public class_SJ Classe{
         if (c = 4) then {
                     d := a/b
                 ;}
-        Out_SJ("Le resultat est : %f", d);
+        Out_SJ("Le resultat est : %f\n", d);
     }
 }

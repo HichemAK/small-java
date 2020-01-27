@@ -8,20 +8,20 @@ public class_SJ Classe{
         b := 1;
         if(a) then {
             if(b) then{
-                Out_SJ("IF IF BLOC");
+                Out_SJ("IF IF BLOC\n");
             }
             else{
-                Out_SJ("IF ELSE BLOC");
+                Out_SJ("IF ELSE BLOC\n");
             }
         }
         else{
             if(b) then{
-                Out_SJ("ELSE IF BLOC");
+                Out_SJ("ELSE IF BLOC\n");
             }
             else{
-                Out_SJ("ELSE ELSE BLOC");
+                Out_SJ("ELSE ELSE BLOC\n");
             }
         }
-        Out_SJ("FINISHED");
+        Out_SJ("FINISHED\n");
     }
 }

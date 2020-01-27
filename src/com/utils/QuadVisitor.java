@@ -113,7 +113,7 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
             QT.add(q);
         }
         Info str = visitString(ctx.string());
-        str.value += ", 0xA, 0xD ";
+        //str.value += ", 0xA, 0xD ";
         Quad q = new Quad("PUSH", str, new Info("ref"), null);
         QT.add(q);
         q = new Quad("CALL", new Info("_printf"), null, null);
@@ -265,7 +265,7 @@ public class QuadVisitor extends Small_JavaBaseVisitor<Info> {
     @Override
     public Info visitString(Small_JavaParser.StringContext ctx) {
         String str = ctx.STRING().getText();
-        Info temp = new Info(getNextStr(), "string_SJ", "'" + str.substring(1, str.length()-1) + "'");
+        Info temp = new Info(getNextStr(), "string_SJ", "`" + str.substring(1, str.length()-1) + "`");
         temps.add(temp);
         return temp;
     }

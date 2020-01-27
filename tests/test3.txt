@@ -4,7 +4,7 @@ import Small_Java.io;
 public class_SJ Classe{
     float_SJ c;
     main_SJ {
-        c := 5 < -3;
-        Out_SJ("%f", c);
+        Out_SJ("What's up\n");
+        Out_SJ("What's up");
     }
 }

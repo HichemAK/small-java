@@ -16,7 +16,7 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Main {
     public static void main(String[] args){
         try {
-            String source = "tests/test_semantic.txt";
+            String source = "tests/tranche_age.txt";
             CharStream cs = fromFileName(source);
             Small_JavaLexer lexer = new Small_JavaLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);

@@ -27,7 +27,7 @@ public class_SJ Classe{
         if (b>20)then{
             c := "Adulte";
         }
-        Out_SJ ("Votre prenom est %s et votre age est de %d ans",a,b);
-        Out_SJ ("Vous faites partie de la tranche dage des %s",c);
+        Out_SJ ("Votre nom est %s et votre age est de %d ans\n",a,b);
+        Out_SJ ("Vous faites partie de la tranche d'age des %s\n",c);
     }
 }

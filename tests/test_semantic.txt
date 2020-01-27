@@ -25,7 +25,7 @@ public class_SJ Classe222222222{
             else{
                 c := 3;
                 Out_SJ("hahahah %d", a, b, d);
-                In_SJ(%d, a);
+                In_SJ("%d", a);
             }
         }
     }
